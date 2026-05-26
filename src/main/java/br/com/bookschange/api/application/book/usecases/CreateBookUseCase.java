@@ -1,11 +1,11 @@
 package br.com.bookschange.api.application.book.usecases;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBookRequest;
-import br.com.bookschange.api.application.book.adapters.in.dtos.response.CreateBookResponse;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.CreateBookPortIn;
 import br.com.bookschange.api.application.book.ports.out.CreateBookPortOut;
-import br.com.bookschange.api.domain.Book;
+import br.com.bookschange.api.domain.models.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ public class CreateBookUseCase implements CreateBookPortIn {
     private final BookMapper mapper;
 
     @Override
-    public CreateBookResponse create(CreateBookRequest request) {
-        Book book = mapper.creatBookRequestToEntity(request);
+    public BookResponse create(BookRequest request) {
+        Book book = mapper.bookRequestToEntity(request);
         Book createdBook = createBookPortOut.create(book);
 
-        return mapper.toCreateBookResponse(createdBook);
+        return mapper.toBookResponse(createdBook);
     }
 }

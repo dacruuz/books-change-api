@@ -1,13 +1,13 @@
 package br.com.bookschange.api.application.book.mappers;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBookRequest;
-import br.com.bookschange.api.application.book.adapters.in.dtos.response.CreateBookResponse;
-import br.com.bookschange.api.domain.Book;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
+import br.com.bookschange.api.domain.models.Book;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
-    Book creatBookRequestToEntity(CreateBookRequest request);
+    Book bookRequestToEntity(BookRequest request);
 
-    CreateBookResponse toCreateBookResponse(Book book);
+    BookResponse toBookResponse(Book book);
 }

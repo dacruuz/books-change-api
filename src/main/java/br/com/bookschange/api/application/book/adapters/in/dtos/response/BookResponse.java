@@ -2,7 +2,7 @@ package br.com.bookschange.api.application.book.adapters.in.dtos.response;
 
 import java.util.UUID;
 
-public record CreateBookResponse(
+public record BookResponse(
         UUID uuid,
         String name,
         String author,

@@ -1,19 +1,22 @@
 package br.com.bookschange.api.application.book.adapters.out;
 
 import br.com.bookschange.api.application.book.adapters.out.repositories.BookJpaRepository;
+import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.domain.models.Book;
-import br.com.bookschange.api.application.book.ports.out.CreateBookPortOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
-public class CreateBookAdapter implements CreateBookPortOut {
+public class FindBookAdapter implements FindBookPortOut {
 
     private final BookJpaRepository repository;
 
     @Override
-    public Book create(Book book) {
-        return repository.save(book);
+    public Optional<Book> findByUuid(UUID uuid) {
+        return repository.findById(uuid);
     }
 }

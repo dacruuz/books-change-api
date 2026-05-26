@@ -1,4 +1,4 @@
-package br.com.bookschange.api.domain;
+package br.com.bookschange.api.domain.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

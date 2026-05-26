@@ -2,7 +2,7 @@ package br.com.bookschange.api.application.book.adapters.in.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CreateBookRequest(
+public record BookRequest(
         @NotBlank(message = "O nome do livro é obrigatório")
         String name,
 

@@ -13,6 +13,10 @@ import java.util.Map;
 @Component
 public class ApiResponseBuilder {
 
+    public ResponseEntity<?> buildInternalServerError(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");
+    }
+
     public ResponseEntity<?> buildError(Exception exception) {
         Map<String, Object> response = new LinkedHashMap<>();
 
@@ -36,6 +40,30 @@ public class ApiResponseBuilder {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    public ResponseEntity<?> buildBusinessError(Exception exception) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    public ResponseEntity<?> buildNotFoundError(Exception exception) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    public ResponseEntity<?> buildConflictError(Exception exception) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
     public ResponseEntity<?> buildCreated(Object data) {
         Map<String, Object> response = new LinkedHashMap<>();
 
@@ -43,5 +71,14 @@ public class ApiResponseBuilder {
         response.put("data", data);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    public ResponseEntity<?> buildSuccess(Object data) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Registro atualizado com sucesso");
+        response.put("data", data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
