@@ -1,5 +1,6 @@
 package br.com.bookschange.infrastructure.shared;
 
+import br.com.bookschange.infrastructure.shared.pagination.PageDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -78,6 +79,21 @@ public class ApiResponseBuilder {
 
         response.put("message", "Registro atualizado com sucesso");
         response.put("data", data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    public ResponseEntity<?> buildSuccessPaged(PageDTO pageDTO) {
+        Map<String, Object> response = new LinkedHashMap<>();
+        Map<String, Object> page = new LinkedHashMap<>();
+
+        page.put("page", pageDTO.page());
+        page.put("pageSize", pageDTO.pageSize());
+        page.put("totalPages", pageDTO.totalPages());
+
+        response.put("message", "Registro atualizado com sucesso");
+        response.put("data", pageDTO.content());
+        response.put("page", page);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
