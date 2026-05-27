@@ -93,7 +93,7 @@ public class ApiResponseBuilder {
 
         response.put("message", "Registro atualizado com sucesso");
         response.put("data", pageDTO.content());
-        response.put("page", page);
+        response.put("pagination", page);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
