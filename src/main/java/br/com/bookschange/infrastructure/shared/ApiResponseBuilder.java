@@ -15,7 +15,12 @@ import java.util.Map;
 public class ApiResponseBuilder {
 
     public ResponseEntity<?> buildInternalServerError(Exception exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Erro interno no servidor");
+        response.put("errors", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     public ResponseEntity<?> buildError(Exception exception) {
