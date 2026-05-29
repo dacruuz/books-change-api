@@ -23,16 +23,35 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
     @Override
     public CreateUserResponse create(String userType, CreateUserRequest request) {
-        validateCpf(request);
+        validateData(request);
 
         User user = mapper.createUserRequestToEntity(request);
-        user.setActive(true);
-
         UserType parsedUserType = UserType.fromValue(userType);
+
+        normalizeData(user);
+
+        user.setActive(true);
         user.setUserType(parsedUserType);
 
         User createdUser = createUserPortOut.create(user);
         return mapper.toCreateUserResponse(createdUser);
+    }
+
+    private void normalizeData(User user) {
+        user.setCpf(CPFUtil.normalize(user.getCpf()));
+        user.setEmail(user.getEmail().trim().toLowerCase());
+    }
+
+    private void validateData(CreateUserRequest request) {
+        validateCpf(request);
+        validateEmail(request);
+    }
+
+    private void validateEmail(CreateUserRequest request) {
+        String normalizedEmail = request.email().trim().toLowerCase();
+        boolean emailAlreadyExists = findUserPortOut.existsByEmail(normalizedEmail);
+
+        if (emailAlreadyExists) throw new BusinessException("Já existe um usuário cadastrado com esse e-mail");
     }
 
     private void validateCpf(CreateUserRequest request) {
