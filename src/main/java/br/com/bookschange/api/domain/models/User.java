@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false)
     private Gender gender;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)

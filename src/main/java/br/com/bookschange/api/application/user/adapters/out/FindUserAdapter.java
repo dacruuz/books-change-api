@@ -24,4 +24,9 @@ public class FindUserAdapter implements FindUserPortOut {
     public boolean existsByCpf(String cpf) {
         return repository.existsByCpf(cpf);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
 }
