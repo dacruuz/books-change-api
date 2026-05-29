@@ -1,6 +1,7 @@
 package br.com.bookschange.api.domain.models;
 
 import br.com.bookschange.api.domain.enums.Gender;
+import br.com.bookschange.api.domain.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,4 +41,8 @@ public class User {
 
     @Column(nullable = false)
     private boolean active;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserType userType;
 }
