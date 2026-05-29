@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateUserUseCase implements CreateUserPortIn {
 
-    private static final String USER_DEFAULT = "default";
-    private static final String USER_STORE = "store";
-
     private final UserMapper mapper;
     private final CreateUserPortOut createUserPortOut;
 
