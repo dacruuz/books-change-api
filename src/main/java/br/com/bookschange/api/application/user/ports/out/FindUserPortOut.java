@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface FindUserPortOut {
     Optional<User> findByUuid(UUID uuid);
+
+    boolean existsByCpf(String normalizedCpf);
 }

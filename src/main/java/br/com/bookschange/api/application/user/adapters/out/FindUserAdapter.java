@@ -19,4 +19,9 @@ public class FindUserAdapter implements FindUserPortOut {
     public Optional<User> findByUuid(UUID uuid) {
         return repository.findById(uuid);
     }
+
+    @Override
+    public boolean existsByCpf(String cpf) {
+        return repository.existsByCpf(cpf);
+    }
 }
