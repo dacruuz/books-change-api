@@ -7,10 +7,12 @@ import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FindUserUseCase implements FindUserPortIn {
@@ -20,9 +22,16 @@ public class FindUserUseCase implements FindUserPortIn {
 
     @Override
     public FindUserResponse findByUuid(UUID uuid) {
-        User foundUser = findUserPortOut.findByUuid(uuid).orElseThrow(
-                () -> new NotFoundException("Usuário não encontrado")
+        log.info("Buscando usuário | uuid: {}", uuid);
+
+        User foundUser = findUserPortOut.findByUuid(uuid)
+                .orElseThrow(() -> {
+                    log.info("Usuário não encontrado | uuid: {}", uuid);
+                    return new NotFoundException("Usuário não encontrado");
+                }
         );
+
+        log.info("Usuário encontrado | uuid: {} | e-mail: {}", foundUser.getUuid(), foundUser.getEmail());
         return mapper.toFindUserResponse(foundUser);
     }
 }

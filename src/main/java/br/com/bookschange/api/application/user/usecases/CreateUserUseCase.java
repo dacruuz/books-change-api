@@ -11,8 +11,10 @@ import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.User;
 import br.com.bookschange.infrastructure.shared.util.CPFUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CreateUserUseCase implements CreateUserPortIn {
@@ -23,6 +25,8 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
     @Override
     public CreateUserResponse create(String userType, CreateUserRequest request) {
+        log.info("Iniciando criação de usuário | email: {}", request.email());
+
         validateData(request);
 
         User user = mapper.createUserRequestToEntity(request);
@@ -34,6 +38,9 @@ public class CreateUserUseCase implements CreateUserPortIn {
         user.setUserType(parsedUserType);
 
         User createdUser = createUserPortOut.create(user);
+
+        log.info("Usuário criado com sucesso | uuid: {} | tipo: {}", createdUser.getUuid(), createdUser.getUserType());
+
         return mapper.toCreateUserResponse(createdUser);
     }
 
@@ -51,13 +58,19 @@ public class CreateUserUseCase implements CreateUserPortIn {
         String normalizedEmail = request.email().trim().toLowerCase();
         boolean emailAlreadyExists = findUserPortOut.existsByEmail(normalizedEmail);
 
-        if (emailAlreadyExists) throw new BusinessException("Já existe um usuário cadastrado com esse e-mail");
+        if (emailAlreadyExists) {
+            log.warn("Tentativa de cadastro com e-mail já existente | email: {}", normalizedEmail);
+            throw new BusinessException("Já existe um usuário cadastrado com esse e-mail");
+        }
     }
 
     private void validateCpf(CreateUserRequest request) {
         String normalizedCpf = CPFUtil.normalize(request.cpf());
         boolean cpfAlreadyExists = findUserPortOut.existsByCpf(normalizedCpf);
 
-        if (cpfAlreadyExists) throw new BusinessException("Já existe um usuário cadastrado com esse cpf");
+        if (cpfAlreadyExists) {
+            log.warn("Tentativa de cadastro com CPF já existente");
+            throw new BusinessException("Já existe um usuário cadastrado com esse cpf");
+        }
     }
 }

@@ -9,11 +9,13 @@ import br.com.bookschange.infrastructure.shared.pagination.PageDTO;
 import br.com.bookschange.infrastructure.shared.pagination.PageMapper;
 import br.com.bookschange.infrastructure.shared.pagination.PaginationFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FindPagedBooksUseCase implements FindPagedBookPortIn {
@@ -25,12 +27,15 @@ public class FindPagedBooksUseCase implements FindPagedBookPortIn {
 
     @Override
     public PageDTO<BookResponse> findAllPaged(int page, int pageSize) {
+        log.info("Buscando livros paginados");
+
         Pageable pageable = PaginationFactory.createPageable(page, pageSize);
 
         Page<Book> books = findPagedBooksPortOut.findAllPaged(pageable);
 
         Page<BookResponse> mappedPage = books.map(bookMapper::toBookResponse);
 
+        log.info("Busca de livro realizada. Encontrando {} livros", mappedPage.getTotalElements());
         return pageMapper.toPageDTO(mappedPage);
     }
 }
