@@ -7,10 +7,12 @@ import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FindBookUseCase implements FindBookPortIn {
@@ -20,9 +22,16 @@ public class FindBookUseCase implements FindBookPortIn {
 
     @Override
     public BookResponse findByUuid(UUID uuid) {
-        Book foundBook = findBookPortOut.findByUuid(uuid).orElseThrow(
-                () -> new NotFoundException("Livro não encontrado.")
+        log.info("Buscando livro | uuid: {}", uuid);
+
+        Book foundBook = findBookPortOut.findByUuid(uuid)
+                .orElseThrow(() -> {
+                    log.warn("Livro não encontrado | uuid: {}", uuid);
+                    return new NotFoundException("Livro não encontrado");
+                }
         );
+
+        log.info("Livro encontrado | uuid: {} | título: {}", foundBook.getUuid(), foundBook.getName());
         return mapper.toBookResponse(foundBook);
     }
 }

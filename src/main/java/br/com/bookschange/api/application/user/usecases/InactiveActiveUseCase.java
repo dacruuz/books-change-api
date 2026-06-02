@@ -9,10 +9,12 @@ import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
@@ -26,29 +28,42 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
 
     @Override
     public FindUserResponse inactiveActive(UUID uuid, String pathParam) {
-        User foundUser = findUserPortOut.findByUuid(uuid).orElseThrow(
-                () -> new NotFoundException("Usuário não encontrado")
+        String action = pathParam.equals(INACTIVE) ? "Inativando usuário" : "Ativando usuário";
+
+        log.info("{} | uuid: {}", action, uuid);
+
+        User foundUser = findUserPortOut.findByUuid(uuid)
+                .orElseThrow(() -> {
+                    log.warn("Usuário não encontrado | uuid: {}", uuid);
+                    return new NotFoundException("Usuário não encontrado");
+                }
         );
 
         checkInactiveActiveParam(pathParam, foundUser);
 
         User user = updateUserPorOut.update(foundUser);
 
+        action = pathParam.equals(INACTIVE) ? "Usuário inativado com sucesso" : "Usuário ativado com sucesso";
+
+        log.info("{} | uuid: {} | status: {}", action, foundUser.getUuid(), pathParam);
         return mapper.toFindUserResponse(user);
     }
 
     private static void checkInactiveActiveParam(String pathParam, User foundUser) {
         if (pathParam.equalsIgnoreCase(ACTIVE)) {
             if (foundUser.isActive()) {
+                log.warn("O usuário já está ativo | uuid: {} | status: {}", foundUser.getUuid(), pathParam);
                 throw new BusinessException("O usuário já está ativo");
             }
             foundUser.setActive(true);
         } else if (pathParam.equalsIgnoreCase(INACTIVE)) {
             if (!foundUser.isActive()) {
+                log.warn("O usuário já está inativo | uuid: {} | status: {}", foundUser.getUuid(), pathParam);
                 throw new BusinessException("O usuário já está inativo");
             }
             foundUser.setActive(false);
         } else {
+            log.error("Ação inválida. Use 'active' ou 'inactive' | uuid: {} | pathParam: {}", foundUser.getUuid(), pathParam);
             throw new BusinessException("Ação inválida. Use 'active' ou 'inactive'");
         }
     }

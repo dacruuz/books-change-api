@@ -9,10 +9,12 @@ import br.com.bookschange.api.application.book.ports.out.UpdateBookPortOut;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UpdateBookUseCase implements UpdateBookPortIn {
@@ -23,13 +25,20 @@ public class UpdateBookUseCase implements UpdateBookPortIn {
 
     @Override
     public BookResponse update(UUID uuid, BookRequest request) {
-        findBookPortOut.findByUuid(uuid).orElseThrow(
-                () -> new NotFoundException("Livro não encontrado")
+        log.info("Buscando livro para edição | uuid: {}", uuid);
+
+        Book foundBook = findBookPortOut.findByUuid(uuid)
+                .orElseThrow(() -> {
+                    log.info("Livro não encontrado | uuid: {}", uuid);
+                    return new NotFoundException("Livro não encontrado");
+                }
         );
-        Book foundBook;
-        foundBook = mapper.bookRequestToEntity(request);
+
+        mapper.updateBookFromRequest(request, foundBook);
+
         Book savedBook = updateBookPortOut.update(foundBook);
 
+        log.info("Edição de livro feita com sucesso");
         return mapper.toBookResponse(savedBook);
     }
 }

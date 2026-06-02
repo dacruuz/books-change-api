@@ -9,10 +9,12 @@ import br.com.bookschange.api.application.user.ports.out.UpdateUserPorOut;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UpdateUserUseCase implements UpdateUserPortIn {
@@ -23,13 +25,20 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
 
     @Override
     public FindUserResponse update(UUID uuid, UpdateUserRequest request) {
-        User foundUser = findUserPortOut.findByUuid(uuid).orElseThrow(
-                () -> new NotFoundException("Usuário não encontrado.")
+        log.info("Buscando usuário para edição | uuid: {}", uuid);
+
+        User foundUser = findUserPortOut.findByUuid(uuid)
+                .orElseThrow(() -> {
+                    log.info("Usuário não encontrado | uuid: {}", uuid);
+                    return new NotFoundException("Usuário não encontrado.");
+                }
         );
 
         mapper.updateUserRequestToEntity(request, foundUser);
 
         User updatedUser = updateUserPorOut.update(foundUser);
+
+        log.info("Edição de usuário feita com sucesso");
         return mapper.toFindUserResponse(updatedUser);
     }
 }
