@@ -1,3 +1,8 @@
 spring:
   application:
     name: bookschange
+
+logging:
+  level:
+    root: INFO
+    br.com.bookschange.api: DEBUG
