@@ -6,4 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface StoreJpaRepository extends JpaRepository<Store, UUID> {
+    boolean existsByCnpj(String cnpj);
+
+    boolean existsByCommercialEmail(String email);
+
+    boolean existsBySlug(String slug);
 }

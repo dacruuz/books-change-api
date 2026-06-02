@@ -9,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface StoreMapper {
     Store createStoreRequestToEntity(CreateStoreRequest request);
 
-    StoreResponse toCreateStoreResponse(Store store);
+    StoreResponse toStoreResponse(Store store);
 }
