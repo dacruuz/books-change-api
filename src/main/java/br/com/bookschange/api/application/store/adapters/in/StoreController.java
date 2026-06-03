@@ -4,6 +4,7 @@ import br.com.bookschange.api.application.store.adapters.in.dtos.request.CreateS
 import br.com.bookschange.api.application.store.adapters.in.dtos.request.UpdateStoreRequest;
 import br.com.bookschange.api.application.store.adapters.in.dtos.response.StoreResponse;
 import br.com.bookschange.api.application.store.ports.in.CreateStorePortIn;
+import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
 import br.com.bookschange.api.application.store.ports.in.FindStorePortIn;
 import br.com.bookschange.api.application.store.ports.in.UpdateStorePortIn;
 import br.com.bookschange.infrastructure.shared.ApiResponseBuilder;
@@ -23,6 +24,7 @@ public class StoreController {
     private final CreateStorePortIn createStorePortIn;
     private final FindStorePortIn findStorePortIn;
     private final UpdateStorePortIn updateStorePortIn;
+    private final DeleteStorePortIn deleteStorePortIn;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateStoreRequest request) {
@@ -40,5 +42,11 @@ public class StoreController {
     public ResponseEntity<?> update(@PathVariable UUID uuid, @Valid @RequestBody UpdateStoreRequest request) {
         StoreResponse response = updateStorePortIn.update(uuid, request);
         return apiResponseBuilder.buildSuccess(response);
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<?> delete(@PathVariable UUID uuid) {
+        deleteStorePortIn.delete(uuid);
+        return apiResponseBuilder.buildDeleted();
     }
 }
