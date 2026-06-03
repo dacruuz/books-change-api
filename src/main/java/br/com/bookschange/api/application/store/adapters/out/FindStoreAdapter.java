@@ -21,6 +21,11 @@ public class FindStoreAdapter implements FindStorePortOut {
     }
 
     @Override
+    public Optional<Store> findBySlug(String slug) {
+        return repository.findBySlug(slug);
+    }
+
+    @Override
     public boolean existsByCnpj(String cnpj) {
         return repository.existsByCnpj(cnpj);
     }
