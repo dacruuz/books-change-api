@@ -6,6 +6,8 @@ import br.com.bookschange.api.application.address.mappers.AddressMapper;
 import br.com.bookschange.api.application.address.ports.in.UpdateAddressPortIn;
 import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
 import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
+import br.com.bookschange.api.application.address.services.AddressNormalizer;
+import br.com.bookschange.api.application.address.services.AddressValidator;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Address;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import java.util.UUID;
 public class UpdateAddressUseCase implements UpdateAddressPortIn {
 
     private final AddressMapper mapper;
+    private final AddressValidator validator;
+    private final AddressNormalizer normalizer;
     private final FindAddressPortOut findAddressPortOut;
     private final SaveAddressPortOut saveAddressPortOut;
 
@@ -33,7 +37,11 @@ public class UpdateAddressUseCase implements UpdateAddressPortIn {
                     return new BusinessException("Endereço não encontrado");
                 });
 
+        validator.validateZipCode(request.zipCode());
+
         mapper.updateAddressRequestToEntity(request, foundAddress);
+
+        normalizer.normalize(foundAddress);
 
         Address updatedAddress = saveAddressPortOut.create(foundAddress);
 
