@@ -1,9 +1,11 @@
 package br.com.bookschange.api.application.address.adapters.in;
 
 import br.com.bookschange.api.application.address.adapters.in.dtos.request.CreateAddressRequest;
+import br.com.bookschange.api.application.address.adapters.in.dtos.request.UpdateAddressRequest;
 import br.com.bookschange.api.application.address.adapters.in.dtos.response.AddressResponse;
 import br.com.bookschange.api.application.address.ports.in.CreateAddressPortIn;
 import br.com.bookschange.api.application.address.ports.in.FindAddressPortIn;
+import br.com.bookschange.api.application.address.ports.in.UpdateAddressPortIn;
 import br.com.bookschange.infrastructure.shared.ApiResponseBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class AddressController {
     private final ApiResponseBuilder apiResponseBuilder;
     private final CreateAddressPortIn createAddressPortIn;
     private final FindAddressPortIn findAddressPortIn;
+    private final UpdateAddressPortIn updateAddressPortIn;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateAddressRequest request) {
@@ -30,6 +33,14 @@ public class AddressController {
     @GetMapping("/{uuid}")
     public ResponseEntity<?> findByUuid(@PathVariable UUID uuid) {
         AddressResponse response = findAddressPortIn.findByUuid(uuid);
+        return apiResponseBuilder.buildSuccess(response);
+    }
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity<?> update(@PathVariable UUID uuid,
+                                    @Valid @RequestBody UpdateAddressRequest request
+    ) {
+        AddressResponse response = updateAddressPortIn.update(uuid, request);
         return apiResponseBuilder.buildSuccess(response);
     }
 }
