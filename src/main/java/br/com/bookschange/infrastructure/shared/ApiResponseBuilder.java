@@ -82,8 +82,33 @@ public class ApiResponseBuilder {
     public ResponseEntity<?> buildSuccess(Object data) {
         Map<String, Object> response = new LinkedHashMap<>();
 
-        response.put("message", "Registro atualizado com sucesso");
+        response.put("message", "Registro recebido com sucesso");
         response.put("data", data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    public ResponseEntity<?> buildSuccess(HttpStatus httpStatus) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Registro recebido com sucesso");
+
+        return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    public ResponseEntity<?> buildSuccess(Object data, HttpStatus httpStatus) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Registro recebido com sucesso");
+        response.put("data", data);
+
+        return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    public ResponseEntity<?> buildDeleted() {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Registro deletado com sucesso");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
