@@ -1,15 +1,19 @@
 package br.com.bookschange.api.domain.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "store")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Store {
 
     @Id
@@ -34,4 +38,12 @@ public class Store {
 
     @Column
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
 }
