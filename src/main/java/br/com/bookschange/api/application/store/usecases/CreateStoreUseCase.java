@@ -27,8 +27,8 @@ public class CreateStoreUseCase implements CreateStorePortIn {
     private final StoreValidator validator;
     private final StoreNormalizer normalizer;
     private final SaveStorePortOut saveStorePortOut;
-    private final SaveUserPortOut saveUserPortOut;
     private final FindUserPortOut findUserPortOut;
+    private final SaveUserPortOut saveUserPortOut;
 
     @Override
     public StoreResponse create(CreateStoreRequest request) {

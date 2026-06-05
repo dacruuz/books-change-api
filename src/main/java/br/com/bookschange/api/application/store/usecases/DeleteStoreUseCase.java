@@ -3,8 +3,12 @@ package br.com.bookschange.api.application.store.usecases;
 import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
 import br.com.bookschange.api.application.store.ports.out.DeleteStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
+import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
+import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
+import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
+import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,17 +22,27 @@ public class DeleteStoreUseCase implements DeleteStorePortIn {
 
     private final FindStorePortOut findStorePortOut;
     private final DeleteStorePortOut deleteStorePortOut;
+    private final FindUserPortOut findUserPortOut;
+    private final SaveUserPortOut saveUserPortOut;
 
     @Override
-    public void delete(UUID uuid) {
-        log.info("Excluindo loja | uuid: {}", uuid);
+    public void delete(UUID storeUuid, UUID ownerUuid) {
+        log.info("Excluindo loja | uuid: {}", storeUuid);
 
-        Store foundStore = findStorePortOut.findByUuid(uuid)
+        Store foundStore = findStorePortOut.findByUuid(storeUuid)
                 .orElseThrow(() -> {
-                    log.warn("Loja não encontrada | uuid: {}", uuid);
+                    log.warn("Loja não encontrada | uuid: {}", storeUuid);
                     return new NotFoundException("Loja não encontrada");
                 });
 
+        User owner = findUserPortOut.findByUuid(ownerUuid)
+                .orElseThrow(() -> {
+                    log.warn("Usuário não encontrado | uuid: {}", ownerUuid);
+                    return new NotFoundException("Usuário não encontrado");
+                });
+        owner.setUserType(UserType.DEFAULT);
+
+        saveUserPortOut.save(owner);
         deleteStorePortOut.delete(foundStore);
     }
 }
