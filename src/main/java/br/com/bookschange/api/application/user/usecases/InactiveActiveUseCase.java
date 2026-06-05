@@ -4,7 +4,7 @@ import br.com.bookschange.api.application.user.adapters.in.dtos.response.FindUse
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.InactiveActiveUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
-import br.com.bookschange.api.application.user.ports.out.UpdateUserPorOut;
+import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
@@ -24,7 +24,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
 
     private final UserMapper mapper;
     private final FindUserPortOut findUserPortOut;
-    private final UpdateUserPorOut updateUserPorOut;
+    private final SaveUserPortOut saveUserPortOut;
 
     @Override
     public FindUserResponse inactiveActive(UUID uuid, String pathParam) {
@@ -41,7 +41,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
 
         checkInactiveActiveParam(pathParam, foundUser);
 
-        User user = updateUserPorOut.update(foundUser);
+        User user = saveUserPortOut.save(foundUser);
 
         action = pathParam.equals(INACTIVE) ? "Usuário inativado com sucesso" : "Usuário ativado com sucesso";
 

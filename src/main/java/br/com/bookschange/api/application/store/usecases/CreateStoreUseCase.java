@@ -8,7 +8,7 @@ import br.com.bookschange.api.application.store.ports.out.SaveStorePortOut;
 import br.com.bookschange.api.application.store.services.StoreNormalizer;
 import br.com.bookschange.api.application.store.services.StoreValidator;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
-import br.com.bookschange.api.application.user.ports.out.UpdateUserPorOut;
+import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
@@ -27,7 +27,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
     private final StoreValidator validator;
     private final StoreNormalizer normalizer;
     private final SaveStorePortOut saveStorePortOut;
-    private final UpdateUserPorOut updateUserPorOut;
+    private final SaveUserPortOut saveUserPortOut;
     private final FindUserPortOut findUserPortOut;
 
     @Override
@@ -48,7 +48,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
 
         normalizer.normalize(store);
 
-        updateUserPorOut.update(owner);
+        saveUserPortOut.save(owner);
         Store createdStore = saveStorePortOut.save(store);
 
         log.info("Loja criada com sucesso | uuid: {} | cnpj: {} | e-mail: {}",
