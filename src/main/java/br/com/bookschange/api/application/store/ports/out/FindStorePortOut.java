@@ -7,9 +7,10 @@ import java.util.UUID;
 
 public interface FindStorePortOut {
     Optional<Store> findByUuid(UUID uuid);
-    Optional<Store> findBySlug(String normalizedSlug);
+    Optional<Store> findBySlug(String slug);
+    Optional<Store> findByOwnerUuid(UUID ownerUuid);
 
-    boolean existsByCnpj(String normalizedCnpj);
-    boolean existsByEmail(String normalizedEmail);
-    boolean existsBySlug(String normalizedSlug);
+    boolean existsByCnpj(String cnpj);
+    boolean existsByEmail(String email);
+    boolean existsBySlug(String slug);
 }

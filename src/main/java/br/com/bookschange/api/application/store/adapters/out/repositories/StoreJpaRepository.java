@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface StoreJpaRepository extends JpaRepository<Store, UUID> {
     Optional<Store> findBySlug(String slug);
+    Optional<Store> findByOwnerUuid(UUID ownerUuid);
 
     boolean existsByCnpj(String cnpj);
     boolean existsByCommercialEmail(String email);

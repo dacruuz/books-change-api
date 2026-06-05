@@ -10,6 +10,7 @@ public record StoreResponse(
         String phone,
         String slug,
         String description,
+        boolean active,
         UUID ownerUuid
 ) {
 }

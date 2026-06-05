@@ -26,6 +26,9 @@ public class FindStoreAdapter implements FindStorePortOut {
     }
 
     @Override
+    public Optional<Store> findByOwnerUuid(UUID ownerUuid) { return repository.findByOwnerUuid(ownerUuid); }
+
+    @Override
     public boolean existsByCnpj(String cnpj) {
         return repository.existsByCnpj(cnpj);
     }

@@ -44,6 +44,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
         owner.setUserType(UserType.STORE); // Changing userType to STORE
 
         Store store = mapper.createStoreRequestToEntity(request);
+        store.setActive(true);
         store.setOwner(owner);
 
         normalizer.normalize(store);
@@ -51,10 +52,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
         saveUserPortOut.save(owner);
         Store createdStore = saveStorePortOut.save(store);
 
-        log.info("Loja criada com sucesso | uuid: {} | cnpj: {} | e-mail: {}",
-                createdStore.getUuid(),
-                CNPJUtil.format(createdStore.getCnpj()),
-                createdStore.getCommercialEmail());
+        log.info("Loja criada com sucesso | uuid: {} | e-mail: {}", createdStore.getUuid(), createdStore.getCommercialEmail());
 
         return mapper.toStoreResponse(createdStore);
     }
