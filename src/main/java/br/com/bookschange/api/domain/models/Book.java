@@ -1,5 +1,6 @@
 package br.com.bookschange.api.domain.models;
 
+import br.com.bookschange.infrastructure.shared.models.BaseModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,12 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false, updatable = false)
-    private UUID uuid;
+public class Book extends BaseModel {
 
     @Column(nullable = false)
     private String name;

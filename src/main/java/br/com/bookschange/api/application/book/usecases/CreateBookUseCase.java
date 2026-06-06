@@ -8,6 +8,7 @@ import br.com.bookschange.api.application.book.ports.out.CreateBookPortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.User;
+import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class CreateBookUseCase implements CreateBookPortIn {
 
         Book book = mapper.bookRequestToEntity(request);
         book.setOwner(owner);
+        book.setCreatedAt(DateUtil.now());
 
         Book createdBook = createBookPortOut.create(book);
 
