@@ -3,16 +3,20 @@ package br.com.bookschange.api.domain.models;
 import br.com.bookschange.api.domain.enums.Gender;
 import br.com.bookschange.api.domain.enums.UserType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

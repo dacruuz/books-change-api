@@ -4,10 +4,7 @@ import br.com.bookschange.api.application.store.adapters.in.dtos.request.CreateS
 import br.com.bookschange.api.application.store.adapters.in.dtos.request.UpdateStoreRequest;
 import br.com.bookschange.api.application.store.adapters.in.dtos.response.StoreResponse;
 import br.com.bookschange.api.domain.models.Store;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface StoreMapper {
@@ -16,5 +13,6 @@ public interface StoreMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateStoreRequestToEntity(UpdateStoreRequest request, @MappingTarget Store store);
 
+    @Mapping(target = "ownerUuid", source = "owner.uuid")
     StoreResponse toStoreResponse(Store store);
 }

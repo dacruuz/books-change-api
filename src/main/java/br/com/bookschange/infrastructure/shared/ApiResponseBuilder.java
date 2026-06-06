@@ -96,6 +96,14 @@ public class ApiResponseBuilder {
         return ResponseEntity.status(httpStatus).body(response);
     }
 
+    public ResponseEntity<?> buildSuccess(String message) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", message);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     public ResponseEntity<?> buildSuccess(Object data, HttpStatus httpStatus) {
         Map<String, Object> response = new LinkedHashMap<>();
 

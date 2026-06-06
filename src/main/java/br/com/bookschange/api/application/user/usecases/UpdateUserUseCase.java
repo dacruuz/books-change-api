@@ -5,7 +5,7 @@ import br.com.bookschange.api.application.user.adapters.in.dtos.response.FindUse
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.UpdateUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
-import br.com.bookschange.api.application.user.ports.out.UpdateUserPorOut;
+import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +21,17 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
 
     private final UserMapper mapper;
     private final FindUserPortOut findUserPortOut;
-    private final UpdateUserPorOut updateUserPorOut;
+    private final SaveUserPortOut saveUserPortOut;
 
     @Override
     public FindUserResponse update(UUID uuid, UpdateUserRequest request) {
         log.info("Buscando usuário para edição | uuid: {}", uuid);
 
-        User foundUser = findUserPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.info("Usuário não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Usuário não encontrado.");
-                }
-        );
+        User user = findUserPortOut.findByUuidOrThrow(uuid);
 
-        mapper.updateUserRequestToEntity(request, foundUser);
+        mapper.updateUserRequestToEntity(request, user);
 
-        User updatedUser = updateUserPorOut.update(foundUser);
+        User updatedUser = saveUserPortOut.save(user);
 
         log.info("Edição de usuário feita com sucesso");
         return mapper.toFindUserResponse(updatedUser);

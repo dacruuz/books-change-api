@@ -2,7 +2,10 @@ package br.com.bookschange.api.application.store.adapters.in.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CNPJ;
+
+import java.util.UUID;
 
 public record CreateStoreRequest(
         @NotBlank(message = "O nome da loja é obrigatório")
@@ -21,6 +24,9 @@ public record CreateStoreRequest(
         @NotBlank(message = "O identificador da loja é obrigatório")
         String slug,
 
-        String description
+        String description,
+
+        @NotNull(message = "O uuid do usuário é obrigatório")
+        UUID ownerUuid
 ) {
 }

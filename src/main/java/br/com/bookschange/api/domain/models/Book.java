@@ -1,15 +1,19 @@
 package br.com.bookschange.api.domain.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "book")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
 
     @Id
@@ -26,7 +30,7 @@ public class Book {
     @Column(nullable = false)
     private String publisher;
 
-    @Column()
+    @Column
     private String resume;
 
     @Column(nullable = false)
@@ -34,4 +38,8 @@ public class Book {
 
     @Column(nullable = false)
     private String currentCondition;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
 }

@@ -23,11 +23,7 @@ public class DeleteAddressUseCase implements DeleteAddressPortIn {
     public void delete(UUID uuid) {
         log.info("Deletando endereço | uuid: {}", uuid);
 
-        Address foundAddress = findAddressPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Endereço não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Endereço não encontrado");
-                });
+        Address foundAddress = findAddressPortOut.findByUuidOrThrow(uuid);
 
         deleteAddressPortOut.delete(foundAddress);
         log.info("Endereço deletado com sucesso");

@@ -25,15 +25,11 @@ public class FindStoreUseCase implements FindStorePortIn {
     public StoreResponse findByUuid(UUID uuid) {
         log.info("Buscando loja | uuid: {}", uuid);
 
-        Store foundStore = findStorePortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Loja não encontrada | uuid: {}", uuid);
-                    return new BusinessException("Loja não encontrada");
-                });
+        Store store = findStorePortOut.findByUuidOrThrow(uuid);
 
         log.info("Loja encontrada | uuid: {} | loja: {}",
-                foundStore.getUuid(),
-                foundStore.getName());
-        return mapper.toStoreResponse(foundStore);
+                store.getUuid(),
+                store.getName());
+        return mapper.toStoreResponse(store);
     }
 }

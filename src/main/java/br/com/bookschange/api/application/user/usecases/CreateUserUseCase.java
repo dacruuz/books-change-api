@@ -4,8 +4,8 @@ import br.com.bookschange.api.application.user.adapters.in.dtos.request.CreateUs
 import br.com.bookschange.api.application.user.adapters.in.dtos.response.CreateUserResponse;
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.CreateUserPortIn;
-import br.com.bookschange.api.application.user.ports.out.CreateUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
+import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.User;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class CreateUserUseCase implements CreateUserPortIn {
 
     private final UserMapper mapper;
-    private final CreateUserPortOut createUserPortOut;
+    private final SaveUserPortOut saveUserPortOut;
     private final FindUserPortOut findUserPortOut;
 
     @Override
@@ -37,7 +37,7 @@ public class CreateUserUseCase implements CreateUserPortIn {
         user.setActive(true);
         user.setUserType(parsedUserType);
 
-        User createdUser = createUserPortOut.create(user);
+        User createdUser = saveUserPortOut.save(user);
 
         log.info("Usuário criado com sucesso | uuid: {} | tipo: {}", createdUser.getUuid(), createdUser.getUserType());
 

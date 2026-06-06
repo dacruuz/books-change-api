@@ -24,11 +24,7 @@ public class FindAddressUseCase implements FindAddressPortIn {
     public AddressResponse findByUuid(UUID uuid) {
         log.info("Buscando endereço por uuid | uuid: {}", uuid);
 
-        Address foundAddress = findAddressPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Endereço não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Endereço não encontrado");
-                });
+        Address foundAddress = findAddressPortOut.findByUuidOrThrow(uuid);
 
         log.info("Endereço encontrado | uuid: {} | cep: {}", foundAddress.getUuid(), foundAddress.getZipCode());
         return mapper.toResponse(foundAddress);

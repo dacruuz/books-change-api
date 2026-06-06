@@ -27,12 +27,7 @@ public class UpdateBookUseCase implements UpdateBookPortIn {
     public BookResponse update(UUID uuid, BookRequest request) {
         log.info("Buscando livro para edição | uuid: {}", uuid);
 
-        Book foundBook = findBookPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.info("Livro não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Livro não encontrado");
-                }
-        );
+        Book foundBook = findBookPortOut.findByUuidOrThrow(uuid);
 
         mapper.updateBookFromRequest(request, foundBook);
 

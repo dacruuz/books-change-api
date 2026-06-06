@@ -9,6 +9,8 @@ public record StoreResponse(
         String commercialEmail,
         String phone,
         String slug,
-        String description
+        String description,
+        boolean active,
+        UUID ownerUuid
 ) {
 }
