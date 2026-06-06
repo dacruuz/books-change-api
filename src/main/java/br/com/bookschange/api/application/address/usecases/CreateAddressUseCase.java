@@ -8,6 +8,7 @@ import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
 import br.com.bookschange.api.domain.models.Address;
+import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class CreateAddressUseCase implements CreateAddressPortIn {
         validator.validateZipCode(request.zipCode());
 
         Address address = mapper.createAddressRequestToEntity(request);
+        address.setCreatedAt(DateUtil.now());
 
         normalizer.normalize(address);
 

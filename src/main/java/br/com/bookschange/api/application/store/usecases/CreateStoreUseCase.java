@@ -14,6 +14,7 @@ import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
 import br.com.bookschange.api.domain.models.User;
 import br.com.bookschange.infrastructure.shared.util.CNPJUtil;
+import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
         Store store = mapper.createStoreRequestToEntity(request);
         store.setActive(true);
         store.setOwner(owner);
+        store.setCreatedAt(DateUtil.now());
 
         normalizer.normalize(store);
 
