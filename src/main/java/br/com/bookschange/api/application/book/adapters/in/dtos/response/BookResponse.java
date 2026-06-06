@@ -9,6 +9,7 @@ public record BookResponse(
         String publisher,
         String resume,
         String category,
-        String currentCondition
+        String currentCondition,
+        UUID ownerUuid
 ) {
 }

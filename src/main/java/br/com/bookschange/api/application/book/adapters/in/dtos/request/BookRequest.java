@@ -1,6 +1,9 @@
 package br.com.bookschange.api.application.book.adapters.in.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.UUID;
 
 public record BookRequest(
         @NotBlank(message = "O nome do livro é obrigatório")
@@ -18,6 +21,9 @@ public record BookRequest(
         String category,
 
         @NotBlank(message = "O estado atual do livro é obrigatório")
-        String currentCondition
+        String currentCondition,
+
+        @NotNull(message = "O uuid do usuário é obrigatório")
+        UUID ownerUuid
 ) {
 }
