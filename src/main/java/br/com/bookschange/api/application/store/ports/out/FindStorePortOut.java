@@ -10,6 +10,8 @@ public interface FindStorePortOut {
     Optional<Store> findBySlug(String slug);
     Optional<Store> findByOwnerUuid(UUID ownerUuid);
 
+    Store findByUuidOrThrow(UUID uuid);
+
     boolean existsByCnpj(String cnpj);
     boolean existsByEmail(String email);
     boolean existsBySlug(String slug);

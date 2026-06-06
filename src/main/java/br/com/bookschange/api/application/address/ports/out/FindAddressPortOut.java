@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface FindAddressPortOut {
     Optional<Address> findByUuid(UUID uuid);
+    Address findByUuidOrThrow(UUID uuid);
 }

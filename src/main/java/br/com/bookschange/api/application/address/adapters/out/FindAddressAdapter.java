@@ -2,6 +2,7 @@ package br.com.bookschange.api.application.address.adapters.out;
 
 import br.com.bookschange.api.application.address.adapters.out.repositories.AddressJpaRepository;
 import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,4 +20,7 @@ public class FindAddressAdapter implements FindAddressPortOut {
     public Optional<Address> findByUuid(UUID uuid) {
         return repository.findById(uuid);
     }
+
+    @Override
+    public Address findByUuidOrThrow(UUID uuid) { return repository.findById(uuid).orElseThrow(() -> new NotFoundException("Endereço não encontrado")); }
 }

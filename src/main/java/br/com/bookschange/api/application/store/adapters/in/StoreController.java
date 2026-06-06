@@ -3,10 +3,7 @@ package br.com.bookschange.api.application.store.adapters.in;
 import br.com.bookschange.api.application.store.adapters.in.dtos.request.CreateStoreRequest;
 import br.com.bookschange.api.application.store.adapters.in.dtos.request.UpdateStoreRequest;
 import br.com.bookschange.api.application.store.adapters.in.dtos.response.StoreResponse;
-import br.com.bookschange.api.application.store.ports.in.CreateStorePortIn;
-import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
-import br.com.bookschange.api.application.store.ports.in.FindStorePortIn;
-import br.com.bookschange.api.application.store.ports.in.UpdateStorePortIn;
+import br.com.bookschange.api.application.store.ports.in.*;
 import br.com.bookschange.infrastructure.shared.ApiResponseBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ public class StoreController {
     private final FindStorePortIn findStorePortIn;
     private final UpdateStorePortIn updateStorePortIn;
     private final DeleteStorePortIn deleteStorePortIn;
+    private final AssignStoreAddressPortIn assignStoreAddressPortIn;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateStoreRequest request) {
@@ -49,5 +47,12 @@ public class StoreController {
                                     @PathVariable UUID ownerUuid) {
         deleteStorePortIn.delete(storeUuid, ownerUuid);
         return apiResponseBuilder.buildDeleted();
+    }
+
+    @PutMapping("/{storeUuid}/address/{addressUuid}")
+    public ResponseEntity<?> associate(@PathVariable UUID storeUuid,
+                                       @PathVariable UUID addressUuid) {
+        assignStoreAddressPortIn.assign(storeUuid, addressUuid);
+        return apiResponseBuilder.buildSuccess("Loja associada com o endereço");
     }
 }
