@@ -1,5 +1,6 @@
 package br.com.bookschange.api.application.book.adapters.in.dtos.request;
 
+import br.com.bookschange.api.domain.enums.CurrentCondition;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,8 +21,8 @@ public record BookRequest(
         @NotBlank(message = "A categoria do livro é obrigatória")
         String category,
 
-        @NotBlank(message = "O estado atual do livro é obrigatório")
-        String currentCondition,
+        @NotNull(message = "O estado atual do livro é obrigatório")
+        CurrentCondition currentCondition,
 
         @NotNull(message = "O uuid do usuário é obrigatório")
         UUID ownerUuid

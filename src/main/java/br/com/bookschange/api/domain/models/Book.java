@@ -1,5 +1,6 @@
 package br.com.bookschange.api.domain.models;
 
+import br.com.bookschange.api.domain.enums.CurrentCondition;
 import br.com.bookschange.infrastructure.shared.models.BaseModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,9 @@ public class Book extends BaseModel {
     @Column(nullable = false)
     private String category;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String currentCondition;
+    private CurrentCondition currentCondition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)

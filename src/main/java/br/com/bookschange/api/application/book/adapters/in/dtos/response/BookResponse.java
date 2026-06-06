@@ -1,5 +1,7 @@
 package br.com.bookschange.api.application.book.adapters.in.dtos.response;
 
+import br.com.bookschange.api.domain.enums.CurrentCondition;
+
 import java.util.UUID;
 
 public record BookResponse(
@@ -9,7 +11,7 @@ public record BookResponse(
         String publisher,
         String resume,
         String category,
-        String currentCondition,
+        CurrentCondition currentCondition,
         UUID ownerUuid
 ) {
 }
