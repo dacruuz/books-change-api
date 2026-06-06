@@ -35,33 +35,15 @@ public class UpdateStoreUseCase implements UpdateStorePortIn {
 
         validator.validateUpdate(uuid, request.slug());
 
-        Store foundStore = findStorePortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Loja não encontrada | uuid: {}", uuid);
-                    return new NotFoundException("Loja não encontrada");
-                });
+        Store store = findStorePortOut.findByUuidOrThrow(uuid);
 
-        mapper.updateStoreRequestToEntity(request, foundStore);
+        mapper.updateStoreRequestToEntity(request, store);
 
-        normalizer.normalize(foundStore);
+        normalizer.normalize(store);
 
-        Store updatedStore = saveStorePortOut.save(foundStore);
+        Store updatedStore = saveStorePortOut.save(store);
 
         log.info("Edição de loja feita com sucesso");
         return mapper.toStoreResponse(updatedStore);
-    }
-
-    private void normalizeData(Store store) {
-        store.setPhone(PhoneUtil.normalize(store.getPhone()));
-    }
-
-    private void validateSlug(String slug) {
-        String normalizedSlug = slug.trim().toLowerCase();
-        boolean slugAlreadyExists = findStorePortOut.existsBySlug(normalizedSlug);
-
-        if (slugAlreadyExists) {
-            log.warn("Tentativa de cadastro com identificador existente");
-            throw new BusinessException("Já existe uma loja cadastrada com esse identificador");
-        }
     }
 }

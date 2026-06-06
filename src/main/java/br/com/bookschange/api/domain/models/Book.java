@@ -30,7 +30,7 @@ public class Book {
     @Column(nullable = false)
     private String publisher;
 
-    @Column()
+    @Column
     private String resume;
 
     @Column(nullable = false)

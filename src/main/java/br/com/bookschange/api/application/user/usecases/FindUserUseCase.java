@@ -24,14 +24,9 @@ public class FindUserUseCase implements FindUserPortIn {
     public FindUserResponse findByUuid(UUID uuid) {
         log.info("Buscando usuário | uuid: {}", uuid);
 
-        User foundUser = findUserPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.info("Usuário não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Usuário não encontrado");
-                }
-        );
+        User user = findUserPortOut.findByUuidOrThrow(uuid);
 
-        log.info("Usuário encontrado | uuid: {} | e-mail: {}", foundUser.getUuid(), foundUser.getEmail());
-        return mapper.toFindUserResponse(foundUser);
+        log.info("Usuário encontrado | uuid: {} | e-mail: {}", user.getUuid(), user.getEmail());
+        return mapper.toFindUserResponse(user);
     }
 }

@@ -27,16 +27,11 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
     public FindUserResponse update(UUID uuid, UpdateUserRequest request) {
         log.info("Buscando usuário para edição | uuid: {}", uuid);
 
-        User foundUser = findUserPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.info("Usuário não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Usuário não encontrado.");
-                }
-        );
+        User user = findUserPortOut.findByUuidOrThrow(uuid);
 
-        mapper.updateUserRequestToEntity(request, foundUser);
+        mapper.updateUserRequestToEntity(request, user);
 
-        User updatedUser = saveUserPortOut.save(foundUser);
+        User updatedUser = saveUserPortOut.save(user);
 
         log.info("Edição de usuário feita com sucesso");
         return mapper.toFindUserResponse(updatedUser);

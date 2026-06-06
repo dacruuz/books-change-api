@@ -24,12 +24,7 @@ public class FindBookUseCase implements FindBookPortIn {
     public BookResponse findByUuid(UUID uuid) {
         log.info("Buscando livro | uuid: {}", uuid);
 
-        Book foundBook = findBookPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Livro não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Livro não encontrado");
-                }
-        );
+        Book foundBook = findBookPortOut.findByUuidOrThrow(uuid);
 
         log.info("Livro encontrado | uuid: {} | título: {}", foundBook.getUuid(), foundBook.getName());
         return mapper.toBookResponse(foundBook);

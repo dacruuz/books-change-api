@@ -29,11 +29,7 @@ public class DeleteStoreUseCase implements DeleteStorePortIn {
     public void delete(UUID storeUuid, UUID ownerUuid) {
         log.info("Excluindo loja | uuid: {}", storeUuid);
 
-        Store foundStore = findStorePortOut.findByUuid(storeUuid)
-                .orElseThrow(() -> {
-                    log.warn("Loja não encontrada | uuid: {}", storeUuid);
-                    return new NotFoundException("Loja não encontrada");
-                });
+        Store store = findStorePortOut.findByUuidOrThrow(storeUuid);
 
         User owner = findUserPortOut.findByUuid(ownerUuid)
                 .orElseThrow(() -> {
@@ -43,6 +39,6 @@ public class DeleteStoreUseCase implements DeleteStorePortIn {
         owner.setUserType(UserType.DEFAULT);
 
         saveUserPortOut.save(owner);
-        deleteStorePortOut.delete(foundStore);
+        deleteStorePortOut.delete(store);
     }
 }

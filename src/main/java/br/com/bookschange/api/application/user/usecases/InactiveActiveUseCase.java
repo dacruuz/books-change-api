@@ -38,12 +38,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
 
         log.info("{} | uuid: {}", action, uuid);
 
-        User foundUser = findUserPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Usuário não encontrado | uuid: {}", uuid);
-                    return new NotFoundException("Usuário não encontrado");
-                }
-        );
+        User foundUser = findUserPortOut.findByUuidOrThrow(uuid);
 
         checkInactiveActiveParam(pathParam, foundUser);
 

@@ -31,11 +31,7 @@ public class UpdateAddressUseCase implements UpdateAddressPortIn {
     public AddressResponse update(UUID uuid, UpdateAddressRequest request) {
         log.info("Buscando endereço | uuid: {}", uuid);
 
-        Address foundAddress = findAddressPortOut.findByUuid(uuid)
-                .orElseThrow(() -> {
-                    log.warn("Endereço não encontrado | uuid: {}", uuid);
-                    return new BusinessException("Endereço não encontrado");
-                });
+        Address foundAddress = findAddressPortOut.findByUuidOrThrow(uuid);
 
         validator.validateZipCode(request.zipCode());
 

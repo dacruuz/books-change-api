@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface FindBookPortOut {
     Optional<Book> findByUuid(UUID uuid);
+    Book findByUuidOrThrow(UUID uuid);
 }
