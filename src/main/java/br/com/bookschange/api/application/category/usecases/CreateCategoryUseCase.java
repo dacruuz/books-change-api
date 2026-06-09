@@ -4,7 +4,9 @@ import br.com.bookschange.api.application.category.adapters.in.dtos.request.Crea
 import br.com.bookschange.api.application.category.adapters.in.dtos.response.CategoryResponse;
 import br.com.bookschange.api.application.category.mappers.CategoryMapper;
 import br.com.bookschange.api.application.category.ports.in.CreateCategoryPortIn;
+import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.application.category.ports.out.SaveCategoryPortOut;
+import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Category;
 import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import jakarta.transaction.Transactional;
@@ -19,17 +21,41 @@ public class CreateCategoryUseCase implements CreateCategoryPortIn {
 
     private final CategoryMapper mapper;
     private final SaveCategoryPortOut saveCategoryPortOut;
+    private final FindCategoryPortOut findCategoryPortOut;
 
     @Override
     @Transactional
     public CategoryResponse create(CreateCategoryRequest request) {
         log.info("Criando nova categoria | label: {}", request.label());
 
+        validateSlug(request.slug());
+
         Category category = mapper.createCategoryToEntity(request);
         category.setCreatedAt(DateUtil.now());
+
+        normalizeData(category);
 
         Category createdCategory = saveCategoryPortOut.save(category);
 
         return mapper.toResponse(createdCategory);
+    }
+
+    private void normalizeData(Category category) {
+        if (category.getLabel() != null) {
+            category.setLabel(category.getLabel().toUpperCase());
+        }
+
+        if (category.getSlug() != null) {
+            category.setSlug(category.getSlug().trim().toLowerCase());
+        }
+    }
+
+    public void validateSlug(String slug) {
+        String normalizedSlug = slug.trim().toLowerCase();
+
+        if (findCategoryPortOut.existsBySlug(normalizedSlug)) {
+            log.warn("Tentativa de cadastro com identificador existente");
+            throw new BusinessException("Já existe uma categoria cadastrada com esse identificador");
+        }
     }
 }

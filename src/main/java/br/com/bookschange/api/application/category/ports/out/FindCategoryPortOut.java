@@ -11,4 +11,6 @@ public interface FindCategoryPortOut {
 
     Optional<Category> findByUuid(UUID uuid);
     Category findByUuidOrThrow(UUID uuid);
+
+    boolean existsBySlug(String normalizedSlug);
 }

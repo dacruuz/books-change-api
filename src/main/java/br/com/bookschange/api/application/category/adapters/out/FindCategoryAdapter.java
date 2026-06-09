@@ -36,4 +36,9 @@ public class FindCategoryAdapter implements FindCategoryPortOut {
             return new NotFoundException("Categoria não encontrada");
         });
     }
+
+    @Override
+    public boolean existsBySlug(String slug) {
+        return repository.existsBySlug(slug);
+    }
 }
