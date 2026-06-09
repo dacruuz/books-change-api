@@ -1,5 +1,6 @@
 package br.com.bookschange.infrastructure.shared.models;
 
+import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +20,11 @@ public abstract class BaseModel {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = DateUtil.now();
+        }
+    }
 }

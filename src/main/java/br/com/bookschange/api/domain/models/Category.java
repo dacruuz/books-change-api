@@ -25,4 +25,7 @@ public class Category extends BaseModel {
 
     @Column(nullable = false, unique = true)
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    private List<BookCategory> bookCategories = new ArrayList<>();
 }

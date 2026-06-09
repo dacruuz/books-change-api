@@ -32,7 +32,7 @@ public class Book extends BaseModel {
     private String resume;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookCategory> categories = new ArrayList<>();
+    private List<BookCategory> bookCategories = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,4 +41,22 @@ public class Book extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
+    public void addCategories(List<Category> categories) {
+        categories.forEach(this::addCategory);
+    }
+
+    public void addCategory(Category category) {
+        BookCategory bookCategory = new BookCategory();
+        bookCategory.setBook(this);
+        bookCategory.setCategory(category);
+
+        this.bookCategories.add(bookCategory);
+    }
+
+    public void removeCategory(Category category) {
+        this.bookCategories.removeIf(
+                bc -> bc.getCategory().getUuid().equals(category.getUuid())
+        );
+    }
 }

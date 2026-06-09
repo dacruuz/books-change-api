@@ -8,7 +8,6 @@ import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut
 import br.com.bookschange.api.application.category.ports.out.SaveCategoryPortOut;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Category;
-import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,6 @@ public class CreateCategoryUseCase implements CreateCategoryPortIn {
         validateSlug(request.slug());
 
         Category category = mapper.createCategoryToEntity(request);
-        category.setCreatedAt(DateUtil.now());
 
         normalizeData(category);
 

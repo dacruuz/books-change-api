@@ -25,6 +25,11 @@ public class FindCategoryAdapter implements FindCategoryPortOut {
     }
 
     @Override
+    public List<Category> findAllByUuids(List<UUID> uuidList) {
+        return repository.findAllById(uuidList);
+    }
+
+    @Override
     public Optional<Category> findByUuid(UUID uuid) {
         return repository.findById(uuid);
     }

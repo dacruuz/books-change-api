@@ -10,7 +10,6 @@ import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.User;
 import br.com.bookschange.infrastructure.shared.util.CPFUtil;
-import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,6 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
         user.setActive(true);
         user.setUserType(parsedUserType);
-        user.setCreatedAt(DateUtil.now());
 
         User createdUser = saveUserPortOut.save(user);
 

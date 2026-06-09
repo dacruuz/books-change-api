@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface FindCategoryPortOut {
     List<Category> findAll();
+    List<Category> findAllByUuids(List<UUID> uuidList);
 
     Optional<Category> findByUuid(UUID uuid);
     Category findByUuidOrThrow(UUID uuid);

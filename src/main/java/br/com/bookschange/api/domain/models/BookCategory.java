@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "book_category")
+@Table(name = "book_categories", uniqueConstraints = @UniqueConstraint(columnNames = {"book_id", "category_id"}))
 public class BookCategory extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
