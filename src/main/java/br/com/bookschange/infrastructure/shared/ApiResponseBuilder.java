@@ -121,6 +121,15 @@ public class ApiResponseBuilder {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    public ResponseEntity<?> buildList(List<Object> data) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Lista recebida com sucesso");
+        response.put("data", data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     public ResponseEntity<?> buildSuccessPaged(PageDTO pageDTO) {
         Map<String, Object> response = new LinkedHashMap<>();
         Map<String, Object> page = new LinkedHashMap<>();
