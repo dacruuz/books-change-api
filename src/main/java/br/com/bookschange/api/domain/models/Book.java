@@ -8,10 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,8 +31,8 @@ public class Book extends BaseModel {
     @Column
     private String resume;
 
-    @Column(nullable = false)
-    private String category;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookCategory> categories = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
