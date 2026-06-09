@@ -37,6 +37,10 @@ public class CreateCategoryUseCase implements CreateCategoryPortIn {
 
         Category createdCategory = saveCategoryPortOut.save(category);
 
+        log.info("Categoria criada com sucesso | uuid: {} | label: {}",
+                createdCategory.getUuid(),
+                createdCategory.getLabel()
+        );
         return mapper.toResponse(createdCategory);
     }
 
