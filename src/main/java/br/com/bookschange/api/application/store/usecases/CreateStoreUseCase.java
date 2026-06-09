@@ -35,11 +35,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
 
         validator.validateCreation(request.commercialEmail(), request.cnpj(), request.slug());
 
-        User owner = findUserPortOut.findByUuid(request.ownerUuid())
-                .orElseThrow(() -> {
-                    log.warn("Usuário não encontrado | uuid: {}", request.ownerUuid());
-                    return new NotFoundException("Usuário não encontrado");
-                });
+        User owner = findUserPortOut.findByUuidOrThrow(request.ownerUuid());
         owner.setUserType(UserType.STORE); // Changing userType to STORE
 
         Store store = mapper.createStoreRequestToEntity(request);
