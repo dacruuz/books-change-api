@@ -31,11 +31,7 @@ public class DeleteStoreUseCase implements DeleteStorePortIn {
 
         Store store = findStorePortOut.findByUuidOrThrow(storeUuid);
 
-        User owner = findUserPortOut.findByUuid(ownerUuid)
-                .orElseThrow(() -> {
-                    log.warn("Usuário não encontrado | uuid: {}", ownerUuid);
-                    return new NotFoundException("Usuário não encontrado");
-                });
+        User owner = findUserPortOut.findByUuidOrThrow(ownerUuid);
         owner.setUserType(UserType.DEFAULT);
 
         saveUserPortOut.save(owner);

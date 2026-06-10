@@ -13,8 +13,6 @@ import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
 import br.com.bookschange.api.domain.models.User;
-import br.com.bookschange.infrastructure.shared.util.CNPJUtil;
-import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,17 +35,12 @@ public class CreateStoreUseCase implements CreateStorePortIn {
 
         validator.validateCreation(request.commercialEmail(), request.cnpj(), request.slug());
 
-        User owner = findUserPortOut.findByUuid(request.ownerUuid())
-                .orElseThrow(() -> {
-                    log.warn("Usuário não encontrado | uuid: {}", request.ownerUuid());
-                    return new NotFoundException("Usuário não encontrado");
-                });
+        User owner = findUserPortOut.findByUuidOrThrow(request.ownerUuid());
         owner.setUserType(UserType.STORE); // Changing userType to STORE
 
         Store store = mapper.createStoreRequestToEntity(request);
         store.setActive(true);
         store.setOwner(owner);
-        store.setCreatedAt(DateUtil.now());
 
         normalizer.normalize(store);
 
