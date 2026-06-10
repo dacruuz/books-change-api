@@ -5,6 +5,7 @@ import br.com.bookschange.api.application.book.adapters.in.dtos.request.UpdateBo
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
+import br.com.bookschange.api.shared.dtos.SelectOptionDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
-    Book bookRequestToEntity(CreateBookRequest request);
+    Book createBookRequestToEntity(CreateBookRequest request);
 
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "bookCategories", ignore = true)
@@ -23,10 +24,14 @@ public interface BookMapper {
     @Mapping(target = "categories", source = "bookCategories")
     BookResponse toBookResponse(Book book);
 
-    default List<String> mapBookCategories(List<BookCategory> bookCategories) {
+    default List<SelectOptionDTO> mapBookCategories(List<BookCategory> bookCategories) {
         return bookCategories
                 .stream()
-                .map(bookCategory -> bookCategory.getCategory().getLabel())
+                .map(bookCategory ->
+                        new SelectOptionDTO(
+                                bookCategory.getCategory().getUuid(),
+                                bookCategory.getCategory().getLabel()
+                        ))
                 .toList();
     }
 }

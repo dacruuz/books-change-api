@@ -35,7 +35,7 @@ public class CreateBookUseCase implements CreateBookPortIn {
         User owner = findUserPortOut.findByUuidOrThrow(request.ownerUuid());
         List<Category> categories = findCategoryPortOut.findAllByUuids(request.categories());
 
-        Book book = mapper.bookRequestToEntity(request);
+        Book book = mapper.createBookRequestToEntity(request);
         book.setOwner(owner);
         book.addCategories(categories);
 
