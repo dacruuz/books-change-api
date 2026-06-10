@@ -1,6 +1,7 @@
 package br.com.bookschange.api.application.book.mappers;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.UpdateBookRequest;
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
@@ -12,9 +13,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
-    Book bookRequestToEntity(BookRequest request);
+    Book bookRequestToEntity(CreateBookRequest request);
 
-    void updateBookFromRequest(BookRequest request, @MappingTarget Book book);
+    @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "bookCategories", ignore = true)
+    void updateBookFromRequest(UpdateBookRequest request, @MappingTarget Book book);
 
     @Mapping(target = "ownerUuid", source = "owner.uuid")
     @Mapping(target = "categories", source = "bookCategories")

@@ -1,17 +1,19 @@
 package br.com.bookschange.api.application.book.usecases;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.UpdateBookRequest;
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.UpdateBookPortIn;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.application.book.ports.out.UpdateBookPortOut;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
+import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.domain.models.Book;
+import br.com.bookschange.api.domain.models.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -19,21 +21,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UpdateBookUseCase implements UpdateBookPortIn {
 
+    private final BookMapper mapper;
     private final UpdateBookPortOut updateBookPortOut;
     private final FindBookPortOut findBookPortOut;
-    private final BookMapper mapper;
+    private final FindCategoryPortOut findCategoryPortOut;
 
     @Override
-    public BookResponse update(UUID uuid, BookRequest request) {
-        log.info("Buscando livro para edição | uuid: {}", uuid);
+    public BookResponse update(UUID uuid, UpdateBookRequest request) {
+        log.info("Atualizando livro | uuid: {}", uuid);
 
-        Book foundBook = findBookPortOut.findByUuidOrThrow(uuid);
+        Book book = findBookPortOut.findByUuidOrThrow(uuid);
+        List<Category> categories = findCategoryPortOut.findAllByUuids(request.categories());
 
-        mapper.updateBookFromRequest(request, foundBook);
+        mapper.updateBookFromRequest(request, book);
 
-        Book savedBook = updateBookPortOut.update(foundBook);
+        book.replaceCategories(categories);
 
-        log.info("Edição de livro feita com sucesso");
-        return mapper.toBookResponse(savedBook);
+        Book updatedBook = updateBookPortOut.update(book);
+
+        log.info("Livro atualizado com sucesso | uuid: {}", updatedBook.getUuid());
+
+        return mapper.toBookResponse(updatedBook);
     }
 }

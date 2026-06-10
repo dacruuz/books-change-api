@@ -59,4 +59,28 @@ public class Book extends BaseModel {
                 bc -> bc.getCategory().getUuid().equals(category.getUuid())
         );
     }
+
+    public void replaceCategories(List<Category> categories) {
+        removeObsoleteCategories(categories);
+        addMissingCategories(categories);
+    }
+
+    private void removeObsoleteCategories(List<Category> categories) {
+        this.bookCategories.removeIf(bookCategory ->
+                categories.stream()
+                        .noneMatch(category ->
+                                category.getUuid().equals(bookCategory.getCategory().getUuid())));
+    }
+
+    private void addMissingCategories(List<Category> categories) {
+        categories.forEach(category -> {
+            boolean exists = this.bookCategories.stream()
+                    .anyMatch(bookCategory ->
+                            bookCategory.getCategory().getUuid().equals(category.getUuid()));
+
+            if (!exists) {
+                addCategory(category);
+            }
+        });
+    }
 }

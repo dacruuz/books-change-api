@@ -1,6 +1,7 @@
 package br.com.bookschange.api.application.book.adapters.in;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.UpdateBookRequest;
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.book.ports.in.CreateBookPortIn;
 import br.com.bookschange.api.application.book.ports.in.FindBookPortIn;
@@ -27,14 +28,14 @@ public class BooksController {
     private final FindPagedBookPortIn findPagedBookPortIn;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid BookRequest request) {
+    public ResponseEntity<?> create(@RequestBody @Valid CreateBookRequest request) {
         BookResponse response = createBookPortIn.create(request);
         return apiResponseBuilder.buildCreated(response);
     }
 
     @PutMapping("/{uuid}")
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
-                                    @RequestBody @Valid BookRequest request
+                                    @RequestBody @Valid UpdateBookRequest request
     ) {
         BookResponse response = updateBookPortIn.update(uuid, request);
         return apiResponseBuilder.buildSuccess(response);

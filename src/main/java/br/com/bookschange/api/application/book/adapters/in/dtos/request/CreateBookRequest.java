@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-public record BookRequest(
+public record CreateBookRequest(
         @NotBlank(message = "O nome do livro é obrigatório")
         String name,
 

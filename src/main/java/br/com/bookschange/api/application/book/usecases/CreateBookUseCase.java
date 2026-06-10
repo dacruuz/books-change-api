@@ -1,6 +1,6 @@
 package br.com.bookschange.api.application.book.usecases;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.BookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBookRequest;
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.CreateBookPortIn;
@@ -10,7 +10,6 @@ import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.Category;
 import br.com.bookschange.api.domain.models.User;
-import br.com.bookschange.infrastructure.shared.util.DateUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class CreateBookUseCase implements CreateBookPortIn {
 
     @Override
     @Transactional
-    public BookResponse create(BookRequest request) {
+    public BookResponse create(CreateBookRequest request) {
         log.info("Criando livro | titulo: {}", request.name());
 
         User owner = findUserPortOut.findByUuidOrThrow(request.ownerUuid());
