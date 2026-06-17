@@ -1,10 +1,9 @@
 package br.com.bookschange.api.application.user.usecases;
 
-import br.com.bookschange.api.application.user.adapters.in.dtos.response.FindUserResponse;
+import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.FindUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +20,12 @@ public class FindUserUseCase implements FindUserPortIn {
     private final FindUserPortOut findUserPortOut;
 
     @Override
-    public FindUserResponse findByUuid(UUID uuid) {
+    public UserResponse findByUuid(UUID uuid) {
         log.info("Buscando usuário | uuid: {}", uuid);
 
         User user = findUserPortOut.findByUuidOrThrow(uuid);
 
         log.info("Usuário encontrado | uuid: {} | e-mail: {}", user.getUuid(), user.getEmail());
-        return mapper.toFindUserResponse(user);
+        return mapper.toUserResponse(user);
     }
 }

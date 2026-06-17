@@ -2,13 +2,12 @@ package br.com.bookschange.api.application.user.usecases;
 
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.SaveStorePortOut;
-import br.com.bookschange.api.application.user.adapters.in.dtos.response.FindUserResponse;
+import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.InactiveActiveUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
 
     @Override
     @Transactional
-    public FindUserResponse inactiveActive(UUID uuid, String pathParam) {
+    public UserResponse inactiveActive(UUID uuid, String pathParam) {
         String action = pathParam.equals(INACTIVE) ? "Inativando usuário" : "Ativando usuário";
 
         log.info("{} | uuid: {}", action, uuid);
@@ -52,7 +51,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
         action = pathParam.equals(INACTIVE) ? "Usuário inativado com sucesso" : "Usuário ativado com sucesso";
 
         log.info("{} | uuid: {} | status: {}", action, foundUser.getUuid(), pathParam);
-        return mapper.toFindUserResponse(user);
+        return mapper.toUserResponse(user);
     }
 
     private static void checkInactiveActiveParam(String pathParam, User foundUser) {

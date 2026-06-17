@@ -1,7 +1,7 @@
 package br.com.bookschange.api.application.user.usecases;
 
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.CreateUserRequest;
-import br.com.bookschange.api.application.user.adapters.in.dtos.response.CreateUserResponse;
+import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
 import br.com.bookschange.api.application.user.mappers.UserMapper;
 import br.com.bookschange.api.application.user.ports.in.CreateUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
@@ -24,7 +24,7 @@ public class CreateUserUseCase implements CreateUserPortIn {
     private final FindUserPortOut findUserPortOut;
 
     @Override
-    public CreateUserResponse create(String userType, CreateUserRequest request) {
+    public UserResponse create(String userType, CreateUserRequest request) {
         log.info("Iniciando criação de usuário | email: {}", request.email());
 
         validateData(request);
@@ -41,7 +41,7 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
         log.info("Usuário criado com sucesso | uuid: {} | tipo: {}", createdUser.getUuid(), createdUser.getUserType());
 
-        return mapper.toCreateUserResponse(createdUser);
+        return mapper.toUserResponse(createdUser);
     }
 
     private void normalizeData(User user) {
