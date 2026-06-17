@@ -4,7 +4,7 @@ import br.com.bookschange.api.application.book.adapters.in.dtos.request.CreateBo
 import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.CreateBookPortIn;
-import br.com.bookschange.api.application.book.ports.out.CreateBookPortOut;
+import br.com.bookschange.api.application.book.ports.out.SaveBookPortOut;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.domain.models.Book;
@@ -23,7 +23,7 @@ import java.util.List;
 public class CreateBookUseCase implements CreateBookPortIn {
 
     private final BookMapper mapper;
-    private final CreateBookPortOut createBookPortOut;
+    private final SaveBookPortOut saveBookPortOut;
     private final FindUserPortOut findUserPortOut;
     private final FindCategoryPortOut findCategoryPortOut;
 
@@ -39,7 +39,7 @@ public class CreateBookUseCase implements CreateBookPortIn {
         book.setOwner(owner);
         book.addCategories(categories);
 
-        Book createdBook = createBookPortOut.create(book);
+        Book createdBook = saveBookPortOut.save(book);
 
         log.info("Livro criado com sucesso | uuid: {} | título: {}", createdBook.getUuid(), createdBook.getName());
         return mapper.toBookResponse(createdBook);
