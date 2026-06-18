@@ -41,7 +41,7 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
         log.info("Usuário criado com sucesso | uuid: {} | tipo: {}", createdUser.getUuid(), createdUser.getUserType());
 
-        return mapper.toUserResponse(createdUser);
+        return mapper.entityToUserResponse(createdUser);
     }
 
     private void normalizeData(User user) {

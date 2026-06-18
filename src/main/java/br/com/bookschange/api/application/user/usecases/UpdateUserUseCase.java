@@ -33,6 +33,6 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
         User updatedUser = saveUserPortOut.save(user);
 
         log.info("Edição de usuário feita com sucesso");
-        return mapper.toUserResponse(updatedUser);
+        return mapper.entityToUserResponse(updatedUser);
     }
 }

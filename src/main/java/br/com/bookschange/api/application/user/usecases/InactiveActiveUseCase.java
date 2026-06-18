@@ -51,7 +51,7 @@ public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
         action = pathParam.equals(INACTIVE) ? "Usuário inativado com sucesso" : "Usuário ativado com sucesso";
 
         log.info("{} | uuid: {} | status: {}", action, foundUser.getUuid(), pathParam);
-        return mapper.toUserResponse(user);
+        return mapper.entityToUserResponse(user);
     }
 
     private static void checkInactiveActiveParam(String pathParam, User foundUser) {
