@@ -22,7 +22,7 @@ public interface BookMapper {
 
     @Mapping(target = "ownerUuid", source = "owner.uuid")
     @Mapping(target = "categories", source = "bookCategories")
-    BookResponse toBookResponse(Book book);
+    BookResponse entityToBookResponse(Book book);
 
     default List<SelectOptionDTO> mapBookCategories(List<BookCategory> bookCategories) {
         return bookCategories
