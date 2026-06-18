@@ -116,7 +116,7 @@ public class ApiResponseBuilder {
     public ResponseEntity<?> buildDeleted() {
         Map<String, Object> response = new LinkedHashMap<>();
 
-        response.put("message", "Registro deletado com sucesso");
+        response.put("message", "Registro excluído com sucesso");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

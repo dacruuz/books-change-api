@@ -3,10 +3,7 @@ package br.com.bookschange.api.application.user.adapters.in;
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.CreateUserRequest;
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.UpdateUserRequest;
 import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
-import br.com.bookschange.api.application.user.ports.in.CreateUserPortIn;
-import br.com.bookschange.api.application.user.ports.in.FindUserPortIn;
-import br.com.bookschange.api.application.user.ports.in.InactiveActiveUserPortIn;
-import br.com.bookschange.api.application.user.ports.in.UpdateUserPortIn;
+import br.com.bookschange.api.application.user.ports.in.*;
 import br.com.bookschange.infrastructure.shared.ApiResponseBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ public class UserController {
     private final FindUserPortIn findUserPortIn;
     private final InactiveActiveUserPortIn inactiveActiveUserPortIn;
     private final UpdateUserPortIn updateUserPortIn;
+    private final DeleteUserPortIn deleteUserPortIn;
 
     @PostMapping("/{userType}")
     public ResponseEntity<?> create(@PathVariable String userType, @RequestBody @Valid CreateUserRequest request) {
@@ -52,5 +50,11 @@ public class UserController {
     ) {
         UserResponse response = updateUserPortIn.update(UUID.fromString(uuid), request);
         return apiResponseBuilder.buildSuccess(response);
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<?> delete(@PathVariable UUID uuid) {
+        deleteUserPortIn.delete(uuid);
+        return apiResponseBuilder.buildDeleted();
     }
 }
