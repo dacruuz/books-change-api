@@ -9,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface CategoryMapper {
     Category createCategoryToEntity(CreateCategoryRequest request);
 
-    CategoryResponse toResponse(Category category);
+    CategoryResponse entityToCategoryResponse(Category category);
 }
