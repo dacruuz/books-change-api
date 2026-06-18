@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class InactiveActiveUseCase implements InactiveActiveUserPortIn {
+public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
 
     private static final String ACTIVE = "active";
     private static final String INACTIVE = "inactive";
