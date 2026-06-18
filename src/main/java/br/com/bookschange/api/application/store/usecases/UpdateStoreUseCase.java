@@ -8,10 +8,7 @@ import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.SaveStorePortOut;
 import br.com.bookschange.api.application.store.services.StoreNormalizer;
 import br.com.bookschange.api.application.store.services.StoreValidator;
-import br.com.bookschange.api.domain.exceptions.BusinessException;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
-import br.com.bookschange.infrastructure.shared.util.PhoneUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,6 +41,6 @@ public class UpdateStoreUseCase implements UpdateStorePortIn {
         Store updatedStore = saveStorePortOut.save(store);
 
         log.info("Edição de loja feita com sucesso");
-        return mapper.toStoreResponse(updatedStore);
+        return mapper.entityToStoreResponse(updatedStore);
     }
 }

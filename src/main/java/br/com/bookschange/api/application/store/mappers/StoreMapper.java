@@ -14,5 +14,5 @@ public interface StoreMapper {
     void updateStoreRequestToEntity(UpdateStoreRequest request, @MappingTarget Store store);
 
     @Mapping(target = "ownerUuid", source = "owner.uuid")
-    StoreResponse toStoreResponse(Store store);
+    StoreResponse entityToStoreResponse(Store store);
 }

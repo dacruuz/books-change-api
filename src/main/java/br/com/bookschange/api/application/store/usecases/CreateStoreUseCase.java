@@ -10,7 +10,6 @@ import br.com.bookschange.api.application.store.services.StoreValidator;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Store;
 import br.com.bookschange.api.domain.models.User;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +48,6 @@ public class CreateStoreUseCase implements CreateStorePortIn {
 
         log.info("Loja criada com sucesso | uuid: {} | e-mail: {}", createdStore.getUuid(), createdStore.getCommercialEmail());
 
-        return mapper.toStoreResponse(createdStore);
+        return mapper.entityToStoreResponse(createdStore);
     }
 }
