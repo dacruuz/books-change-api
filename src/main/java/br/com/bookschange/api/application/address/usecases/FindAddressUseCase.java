@@ -4,7 +4,6 @@ import br.com.bookschange.api.application.address.adapters.in.dtos.response.Addr
 import br.com.bookschange.api.application.address.mappers.AddressMapper;
 import br.com.bookschange.api.application.address.ports.in.FindAddressPortIn;
 import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Address;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,6 @@ public class FindAddressUseCase implements FindAddressPortIn {
         Address foundAddress = findAddressPortOut.findByUuidOrThrow(uuid);
 
         log.info("Endereço encontrado | uuid: {} | cep: {}", foundAddress.getUuid(), foundAddress.getZipCode());
-        return mapper.toResponse(foundAddress);
+        return mapper.entityToAddressResponse(foundAddress);
     }
 }
