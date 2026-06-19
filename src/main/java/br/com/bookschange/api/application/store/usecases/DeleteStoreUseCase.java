@@ -1,14 +1,16 @@
 package br.com.bookschange.api.application.store.usecases;
 
+import br.com.bookschange.api.application.address.ports.out.DeleteAddressPortOut;
 import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
 import br.com.bookschange.api.application.store.ports.out.DeleteStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
+import br.com.bookschange.api.domain.models.Address;
 import br.com.bookschange.api.domain.models.Store;
 import br.com.bookschange.api.domain.models.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,41 @@ public class DeleteStoreUseCase implements DeleteStorePortIn {
     private final DeleteStorePortOut deleteStorePortOut;
     private final FindUserPortOut findUserPortOut;
     private final SaveUserPortOut saveUserPortOut;
+    private final DeleteAddressPortOut deleteAddressPortOut;
 
     @Override
+    @Transactional
     public void delete(UUID storeUuid, UUID ownerUuid) {
-        log.info("Excluindo loja | uuid: {}", storeUuid);
+        log.info("Iniciando exclusão da loja | uuid: {}", storeUuid);
 
         Store store = findStorePortOut.findByUuidOrThrow(storeUuid);
+
+        deleteStoreAddress(store.getAddress());
+        updateOwnerUserType(ownerUuid);
+
+        deleteStorePortOut.delete(store);
+        log.info("Loja excluída com sucesso | storeUuid: {}", storeUuid);
+    }
+
+    private void updateOwnerUserType(UUID ownerUuid) {
+        log.debug("Buscando usuário para alteração do tipo do usuário | ownerUuid: {}", ownerUuid);
 
         User owner = findUserPortOut.findByUuidOrThrow(ownerUuid);
         owner.setUserType(UserType.DEFAULT);
 
         saveUserPortOut.save(owner);
-        deleteStorePortOut.delete(store);
+        log.debug("Tipo do usuário atualizado para DEFAULT | ownerUuid: {}", ownerUuid);
+    }
+
+    private void deleteStoreAddress(Address address) {
+        log.debug("Buscando possível endereço para da loja | addressUuid: {}", address.getUuid());
+
+        if (address == null) {
+            log.debug("Loja não possui endereço cadastrado");
+            return;
+        }
+
+        log.info("Excluindo endereço da loja | addressUuid: {}", address.getUuid());
+        deleteAddressPortOut.delete(address);
     }
 }
