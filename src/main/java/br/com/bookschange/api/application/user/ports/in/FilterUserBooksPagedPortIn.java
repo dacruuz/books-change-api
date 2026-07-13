@@ -1,0 +1,11 @@
+package br.com.bookschange.api.application.user.ports.in;
+
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.FilterBookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
+import br.com.bookschange.infrastructure.shared.pagination.PageDTO;
+import org.springframework.data.domain.Pageable;
+
+public interface FilterUserBooksPagedPortIn {
+
+    PageDTO<BookResponse> filterPaged(FilterBookRequest request, Pageable pageable);
+}
