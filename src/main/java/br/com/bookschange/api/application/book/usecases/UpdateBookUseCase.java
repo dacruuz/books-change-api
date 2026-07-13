@@ -5,7 +5,7 @@ import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookRes
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.UpdateBookPortIn;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
-import br.com.bookschange.api.application.book.ports.out.UpdateBookPortOut;
+import br.com.bookschange.api.application.book.ports.out.SaveBookPortOut;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.Category;
@@ -22,9 +22,9 @@ import java.util.UUID;
 public class UpdateBookUseCase implements UpdateBookPortIn {
 
     private final BookMapper mapper;
-    private final UpdateBookPortOut updateBookPortOut;
     private final FindBookPortOut findBookPortOut;
     private final FindCategoryPortOut findCategoryPortOut;
+    private final SaveBookPortOut saveBookPortOut;
 
     @Override
     public BookResponse update(UUID uuid, UpdateBookRequest request) {
@@ -37,10 +37,10 @@ public class UpdateBookUseCase implements UpdateBookPortIn {
 
         book.replaceCategories(categories);
 
-        Book updatedBook = updateBookPortOut.update(book);
+        Book updatedBook = saveBookPortOut.save(book);
 
         log.info("Livro atualizado com sucesso | uuid: {}", updatedBook.getUuid());
 
-        return mapper.toBookResponse(updatedBook);
+        return mapper.entityToBookResponse(updatedBook);
     }
 }

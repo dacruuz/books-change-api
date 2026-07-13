@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,5 +31,10 @@ public class FindBookAdapter implements FindBookPortOut {
                     log.warn("Livro não encontrado | uuid: {}", uuid);
                     return new NotFoundException("Livro não encontrado");
                 });
+    }
+
+    @Override
+    public List<Book> findAllByOwnerUuid(UUID ownerUuid) {
+        return repository.findAllByOwnerUuid(ownerUuid);
     }
 }

@@ -29,7 +29,7 @@ public class FindCategoryUseCase implements FindCategoryPortIn {
 
         return categoryList
                 .stream()
-                .map(mapper::toResponse)
+                .map(mapper::entityToCategoryResponse)
                 .toList();
     }
 
@@ -38,6 +38,6 @@ public class FindCategoryUseCase implements FindCategoryPortIn {
         log.info("Buscando categoria por uuid | uuid: {}", uuid);
 
         Category category = findCategoryPortOut.findByUuidOrThrow(uuid);
-        return mapper.toResponse(category);
+        return mapper.entityToCategoryResponse(category);
     }
 }

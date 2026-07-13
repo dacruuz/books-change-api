@@ -39,7 +39,7 @@ public class CreateCategoryUseCase implements CreateCategoryPortIn {
                 createdCategory.getUuid(),
                 createdCategory.getLabel()
         );
-        return mapper.toResponse(createdCategory);
+        return mapper.entityToCategoryResponse(createdCategory);
     }
 
     private void normalizeData(Category category) {

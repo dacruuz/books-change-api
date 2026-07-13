@@ -1,10 +1,10 @@
 package br.com.bookschange.api.application.user.ports.in;
 
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.UpdateUserRequest;
-import br.com.bookschange.api.application.user.adapters.in.dtos.response.FindUserResponse;
+import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
 
 import java.util.UUID;
 
 public interface UpdateUserPortIn {
-    FindUserResponse update(UUID uuid, UpdateUserRequest request);
+    UserResponse update(UUID uuid, UpdateUserRequest request);
 }

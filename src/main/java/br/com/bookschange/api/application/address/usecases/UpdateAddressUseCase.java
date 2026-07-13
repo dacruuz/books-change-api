@@ -8,7 +8,6 @@ import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
 import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
-import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Address;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +41,6 @@ public class UpdateAddressUseCase implements UpdateAddressPortIn {
         Address updatedAddress = saveAddressPortOut.create(foundAddress);
 
         log.info("Edição de endereço feita com sucesso | uuid: {}", updatedAddress.getUuid());
-        return mapper.toResponse(updatedAddress);
+        return mapper.entityToAddressResponse(updatedAddress);
     }
 }

@@ -4,7 +4,6 @@ import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookRes
 import br.com.bookschange.api.application.book.mappers.BookMapper;
 import br.com.bookschange.api.application.book.ports.in.FindBookPortIn;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
-import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,6 @@ public class FindBookUseCase implements FindBookPortIn {
         Book foundBook = findBookPortOut.findByUuidOrThrow(uuid);
 
         log.info("Livro encontrado | uuid: {} | título: {}", foundBook.getUuid(), foundBook.getName());
-        return mapper.toBookResponse(foundBook);
+        return mapper.entityToBookResponse(foundBook);
     }
 }

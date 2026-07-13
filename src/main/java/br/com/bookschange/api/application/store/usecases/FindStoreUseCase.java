@@ -4,9 +4,7 @@ import br.com.bookschange.api.application.store.adapters.in.dtos.response.StoreR
 import br.com.bookschange.api.application.store.mappers.StoreMapper;
 import br.com.bookschange.api.application.store.ports.in.FindStorePortIn;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
-import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Store;
-import br.com.bookschange.infrastructure.shared.util.CNPJUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,6 @@ public class FindStoreUseCase implements FindStorePortIn {
         log.info("Loja encontrada | uuid: {} | loja: {}",
                 store.getUuid(),
                 store.getName());
-        return mapper.toStoreResponse(store);
+        return mapper.entityToStoreResponse(store);
     }
 }
