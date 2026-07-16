@@ -16,8 +16,8 @@ public class FilterUserBooksPagedUseCase implements FilterUserBooksPagedPortIn {
     private FilterUserBooksPagedPortOut filterUserBooksPagedPortOut;
 
     @Override
-    public PageDTO<BookResponse> filterPaged(FilterBookRequest request, Pageable pageable) {
-
+    public PageDTO<BookResponse> filter(FilterBookRequest request, Pageable pageable) {
+        
 
         return null;
     }

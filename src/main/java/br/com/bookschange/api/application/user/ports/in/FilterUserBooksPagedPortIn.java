@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface FilterUserBooksPagedPortIn {
 
-    PageDTO<BookResponse> filterPaged(FilterBookRequest request, Pageable pageable);
+    PageDTO<BookResponse> filter(FilterBookRequest request, Pageable pageable);
 }
