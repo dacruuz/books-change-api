@@ -137,6 +137,7 @@ public class ApiResponseBuilder {
         page.put("page", pageDTO.page());
         page.put("pageSize", pageDTO.pageSize());
         page.put("totalPages", pageDTO.totalPages());
+        page.put("totalElements", pageDTO.totalElements());
 
         response.put("message", "Registro atualizado com sucesso");
         response.put("data", pageDTO.content());

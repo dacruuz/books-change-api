@@ -10,6 +10,7 @@ public class PageMapper {
                 page.getNumber() + 1,
                 page.getSize(),
                 page.getTotalPages(),
+                page.getTotalElements(),
                 page.getContent()
         );
     }
