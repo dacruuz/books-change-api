@@ -5,7 +5,9 @@ import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookRes
 import br.com.bookschange.infrastructure.shared.pagination.PageDTO;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface FilterUserBooksPagedPortIn {
 
-    PageDTO<BookResponse> filter(FilterBookRequest request, Pageable pageable);
+    PageDTO<BookResponse> filter(UUID ownerUuid, FilterBookRequest request, int page, int pageSize);
 }

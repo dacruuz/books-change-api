@@ -1,10 +1,13 @@
 package br.com.bookschange.api.application.user.adapters.in;
 
+import br.com.bookschange.api.application.book.adapters.in.dtos.request.FilterBookRequest;
+import br.com.bookschange.api.application.book.adapters.in.dtos.response.BookResponse;
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.CreateUserRequest;
 import br.com.bookschange.api.application.user.adapters.in.dtos.request.UpdateUserRequest;
 import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
 import br.com.bookschange.api.application.user.ports.in.*;
 import br.com.bookschange.infrastructure.shared.ApiResponseBuilder;
+import br.com.bookschange.infrastructure.shared.pagination.PageDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ public class UserController {
     private final ApiResponseBuilder apiResponseBuilder;
     private final CreateUserPortIn createUserPortIn;
     private final FindUserPortIn findUserPortIn;
+    private final FilterUserBooksPagedPortIn filterUserBooksPagedPortIn;
     private final InactiveActiveUserPortIn inactiveActiveUserPortIn;
     private final UpdateUserPortIn updateUserPortIn;
     private final DeleteUserPortIn deleteUserPortIn;
@@ -34,6 +38,16 @@ public class UserController {
     public ResponseEntity<?> findByUuid(@PathVariable String uuid) {
         UserResponse response = findUserPortIn.findByUuid(UUID.fromString(uuid));
         return apiResponseBuilder.buildSuccess(response);
+    }
+
+    @PostMapping("/{uuid}/books/search")
+    public ResponseEntity<?> findUserBooks(@PathVariable UUID uuid,
+                                           @RequestParam(defaultValue = "1") int page,
+                                           @RequestParam(defaultValue = "10") int pageSize,
+                                           @RequestBody FilterBookRequest request
+    ) {
+        PageDTO<BookResponse> response = filterUserBooksPagedPortIn.filter(uuid, request, page, pageSize);
+        return apiResponseBuilder.buildSuccessPaged(response);
     }
 
     @PutMapping("/{uuid}/param/{param}")

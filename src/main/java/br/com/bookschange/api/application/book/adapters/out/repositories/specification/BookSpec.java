@@ -1,6 +1,6 @@
 package br.com.bookschange.api.application.book.adapters.out.repositories.specification;
 
-import br.com.bookschange.api.application.book.adapters.in.dtos.request.FilterBookRequest;
+import br.com.bookschange.api.application.book.dtos.BookFilter;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
 import br.com.bookschange.api.domain.models.Category;
@@ -16,12 +16,13 @@ import java.util.UUID;
 
 public class BookSpec {
 
-    public static Specification<Book> filter(UUID ownerUuid, FilterBookRequest filter) {
+    public static Specification<Book> filter(UUID ownerUuid, BookFilter filter) {
         return (root, query, cb) -> {
             query.distinct(true);
 
             List<Predicate> predicates = new ArrayList<>();
 
+            buildOwnerFilter(ownerUuid, root, cb, predicates);
             buildNameFilter(filter, root, cb, predicates);
             buildAuthorFilter(filter, root, cb, predicates);
             buildPublisherFilter(filter, root, cb, predicates);
@@ -32,7 +33,7 @@ public class BookSpec {
         };
     }
 
-    private static void buildCurrentConditionFilter(FilterBookRequest filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+    private static void buildCurrentConditionFilter(BookFilter filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
         if (filter.currentCondition() != null) {
             predicates.add(
                 cb.equal(
@@ -43,7 +44,7 @@ public class BookSpec {
         }
     }
 
-    private static void buildCategoryFilter(FilterBookRequest filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+    private static void buildCategoryFilter(BookFilter filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
         if (filter.bookCategoriesUuids() != null && !filter.bookCategoriesUuids().isEmpty()) {
             Join<Book, BookCategory> bookCategory = root.join("bookCategories");
             Join<BookCategory, Category> category = bookCategory.join("category");
@@ -54,18 +55,18 @@ public class BookSpec {
         }
     }
 
-    private static void buildPublisherFilter(FilterBookRequest filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+    private static void buildPublisherFilter(BookFilter filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
         if (filter.publisher() != null) {
             predicates.add(
-                cb.equal(
-                        root.get("publisher"),
-                        filter.publisher()
+                cb.like(
+                        cb.lower(root.get("publisher")),
+                        "%" + filter.publisher().toLowerCase() + "%"
                 )
             );
         }
     }
 
-    private static void buildAuthorFilter(FilterBookRequest filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+    private static void buildAuthorFilter(BookFilter filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
         if (filter.author() != null) {
             predicates.add(
                 cb.like(
@@ -76,12 +77,23 @@ public class BookSpec {
         }
     }
 
-    private static void buildNameFilter(FilterBookRequest filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+    private static void buildNameFilter(BookFilter filter, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
         if (filter.name() != null) {
             predicates.add(
                 cb.like(
                     cb.lower(root.get("name")),
                     "%" + filter.name().toLowerCase() + "%"
+                )
+            );
+        }
+    }
+
+    private static void buildOwnerFilter(UUID ownerUuid, Root<Book> root, CriteriaBuilder cb, List<Predicate> predicates) {
+        if (ownerUuid != null) {
+            predicates.add(
+                cb.equal(
+                    root.get("owner").get("uuid"),
+                    ownerUuid
                 )
             );
         }
