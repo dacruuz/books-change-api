@@ -1,5 +1,8 @@
 package br.com.bookschange.api.application.user.usecases;
 
+import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
+import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
+import br.com.bookschange.api.application.book.ports.out.SaveBookPortOut;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.SaveStorePortOut;
 import br.com.bookschange.api.application.user.adapters.in.dtos.response.UserResponse;
@@ -8,12 +11,15 @@ import br.com.bookschange.api.application.user.ports.in.InactiveActiveUserPortIn
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
+import br.com.bookschange.api.domain.models.Address;
+import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -27,8 +33,11 @@ public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
     private final UserMapper mapper;
     private final FindUserPortOut findUserPortOut;
     private final SaveUserPortOut saveUserPortOut;
+    private final FindBookPortOut findBookPortOut;
+    private final SaveBookPortOut saveBookPortOut;
     private final FindStorePortOut findStorePortOut;
     private final SaveStorePortOut saveStorePortOut;
+    private final SaveAddressPortOut saveAddressPortOut;
 
     @Override
     @Transactional
@@ -39,12 +48,8 @@ public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
         User foundUser = findUserPortOut.findByUuidOrThrow(uuid);
 
         inactiveOrActiveUser(pathParam, foundUser);
-
-        findStorePortOut.findByOwnerUuid(foundUser.getUuid())
-                .ifPresent(store -> {
-                    store.setActive(foundUser.isActive());
-                    saveStorePortOut.save(store);
-        });
+        inactiveOrActiveBooks(foundUser);
+        inactiveOrActiveStore(foundUser);
 
         User user = saveUserPortOut.save(foundUser);
 
@@ -54,7 +59,30 @@ public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
         return mapper.entityToUserResponse(user);
     }
 
-    private static void inactiveOrActiveUser(String pathParam, User foundUser) {
+    private void inactiveOrActiveBooks(User owner) {
+        List<Book> books = findBookPortOut.findAllByOwnerUuid(owner.getUuid());
+
+        if (!books.isEmpty()) {
+            books.forEach(book -> book.setActive(owner.isActive()));
+            saveBookPortOut.saveAll(books);
+        }
+    }
+
+    private void inactiveOrActiveStore(User owner) {
+        findStorePortOut.findByOwnerUuid(owner.getUuid())
+                .ifPresent(store -> {
+                    if (store.getAddress() != null) {
+                        Address address = store.getAddress();
+                        address.setActive(owner.isActive());
+                        saveAddressPortOut.save(address);
+                    }
+
+                    store.setActive(owner.isActive());
+                    saveStorePortOut.save(store);
+        });
+    }
+
+    private void inactiveOrActiveUser(String pathParam, User foundUser) {
         if (pathParam.equalsIgnoreCase(ACTIVE)) {
             if (foundUser.isActive()) {
                 log.warn("O usuário já está ativo | uuid: {} | status: {}", foundUser.getUuid(), pathParam);
