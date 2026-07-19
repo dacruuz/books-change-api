@@ -38,7 +38,7 @@ public class UpdateAddressUseCase implements UpdateAddressPortIn {
 
         normalizer.normalize(foundAddress);
 
-        Address updatedAddress = saveAddressPortOut.create(foundAddress);
+        Address updatedAddress = saveAddressPortOut.save(foundAddress);
 
         log.info("Edição de endereço feita com sucesso | uuid: {}", updatedAddress.getUuid());
         return mapper.entityToAddressResponse(updatedAddress);

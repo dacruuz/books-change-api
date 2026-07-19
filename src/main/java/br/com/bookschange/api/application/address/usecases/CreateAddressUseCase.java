@@ -32,7 +32,7 @@ public class CreateAddressUseCase implements CreateAddressPortIn {
 
         normalizer.normalize(address);
 
-        Address createdAddress = saveAddressPortOut.create(address);
+        Address createdAddress = saveAddressPortOut.save(address);
 
         log.info("Endereço criado | uuid: {} | cep: {}", createdAddress.getUuid(), createdAddress.getZipCode());
         return mapper.entityToAddressResponse(createdAddress);

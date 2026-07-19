@@ -13,7 +13,7 @@ public class SaveAddressAdapter implements SaveAddressPortOut {
     private final AddressJpaRepository repository;
 
     @Override
-    public Address create(Address address) {
+    public Address save(Address address) {
         return repository.save(address);
     }
 }
