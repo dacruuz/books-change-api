@@ -35,9 +35,6 @@ public class Store extends BaseModel {
     @Column
     private String description;
 
-    @Column(nullable = false)
-    private boolean active;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;

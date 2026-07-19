@@ -39,9 +39,6 @@ public class User extends BaseModel {
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @Column(nullable = false)
-    private boolean active;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType userType;

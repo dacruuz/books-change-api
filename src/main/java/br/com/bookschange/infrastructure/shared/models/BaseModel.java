@@ -19,6 +19,9 @@ public abstract class BaseModel {
     private UUID uuid;
 
     @Column(nullable = false)
+    private boolean active;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
