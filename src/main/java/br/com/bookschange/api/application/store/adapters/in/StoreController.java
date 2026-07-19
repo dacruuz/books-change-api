@@ -42,7 +42,7 @@ public class StoreController {
         return apiResponseBuilder.buildSuccess(response);
     }
 
-    @DeleteMapping("/{storeUuid}/owner/{ownerUuid}")
+    @DeleteMapping("/{storeUuid}")
     public ResponseEntity<?> delete(@PathVariable UUID storeUuid) {
         deleteStorePortIn.delete(storeUuid);
         return apiResponseBuilder.buildDeleted();
