@@ -34,16 +34,16 @@ public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
     @Transactional
     public UserResponse inactiveActive(UUID uuid, String pathParam) {
         String action = pathParam.equals(INACTIVE) ? "Inativando usuário" : "Ativando usuário";
-
         log.info("{} | uuid: {}", action, uuid);
 
         User foundUser = findUserPortOut.findByUuidOrThrow(uuid);
 
-        checkInactiveActiveParam(pathParam, foundUser);
+        inactiveOrActiveUser(pathParam, foundUser);
 
-        findStorePortOut.findByOwnerUuid(foundUser.getUuid()).ifPresent(store -> {
-            store.setActive(foundUser.isActive());
-            saveStorePortOut.save(store);
+        findStorePortOut.findByOwnerUuid(foundUser.getUuid())
+                .ifPresent(store -> {
+                    store.setActive(foundUser.isActive());
+                    saveStorePortOut.save(store);
         });
 
         User user = saveUserPortOut.save(foundUser);
@@ -54,7 +54,7 @@ public class InactiveActiveUserUseCase implements InactiveActiveUserPortIn {
         return mapper.entityToUserResponse(user);
     }
 
-    private static void checkInactiveActiveParam(String pathParam, User foundUser) {
+    private static void inactiveOrActiveUser(String pathParam, User foundUser) {
         if (pathParam.equalsIgnoreCase(ACTIVE)) {
             if (foundUser.isActive()) {
                 log.warn("O usuário já está ativo | uuid: {} | status: {}", foundUser.getUuid(), pathParam);
