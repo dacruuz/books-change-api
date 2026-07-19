@@ -4,6 +4,7 @@ import br.com.bookschange.api.application.book.ports.out.DeleteBookPortOut;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
+import br.com.bookschange.api.application.store.services.StoreDeletionService;
 import br.com.bookschange.api.application.user.ports.in.DeleteUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.DeleteUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
@@ -27,7 +28,7 @@ public class DeleteUserUseCase implements DeleteUserPortIn {
     private final FindBookPortOut findBookPortOut;
     private final DeleteBookPortOut deleteBookPortOut;
     private final FindStorePortOut findStorePortOut;
-    private final DeleteStorePortIn deleteStorePortIn;
+    private final StoreDeletionService storeDeletionService;
 
     @Override
     @Transactional
@@ -63,7 +64,7 @@ public class DeleteUserUseCase implements DeleteUserPortIn {
                 .ifPresentOrElse(
                         store -> {
                             log.info("Excluindo loja do usuário | storeUuid: {}", store.getUuid());
-                            deleteStorePortIn.delete(store.getUuid(), ownerUuid);
+                            storeDeletionService.delete(store);
                         },
                         () -> log.debug("Usuário não possui loja cadastrada | ownerUuid: {}", ownerUuid)
                 );

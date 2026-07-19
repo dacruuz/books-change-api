@@ -4,6 +4,7 @@ import br.com.bookschange.api.application.address.ports.out.DeleteAddressPortOut
 import br.com.bookschange.api.application.store.ports.in.DeleteStorePortIn;
 import br.com.bookschange.api.application.store.ports.out.DeleteStorePortOut;
 import br.com.bookschange.api.application.store.ports.out.FindStorePortOut;
+import br.com.bookschange.api.application.store.services.StoreDeletionService;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
@@ -23,44 +24,13 @@ import java.util.UUID;
 public class DeleteStoreUseCase implements DeleteStorePortIn {
 
     private final FindStorePortOut findStorePortOut;
-    private final DeleteStorePortOut deleteStorePortOut;
-    private final FindUserPortOut findUserPortOut;
-    private final SaveUserPortOut saveUserPortOut;
-    private final DeleteAddressPortOut deleteAddressPortOut;
+    private final StoreDeletionService storeDeletionService;
 
     @Override
     @Transactional
-    public void delete(UUID storeUuid, UUID ownerUuid) {
-        log.info("Iniciando exclusão da loja | uuid: {}", storeUuid);
-
+    public void delete(UUID storeUuid) {
         Store store = findStorePortOut.findByUuidOrThrow(storeUuid);
 
-        deleteStoreAddress(store.getAddress());
-        updateOwnerUserType(ownerUuid);
-
-        deleteStorePortOut.delete(store);
-        log.info("Loja excluída com sucesso | storeUuid: {}", storeUuid);
-    }
-
-    private void updateOwnerUserType(UUID ownerUuid) {
-        log.debug("Buscando usuário para alteração do tipo do usuário | ownerUuid: {}", ownerUuid);
-
-        User owner = findUserPortOut.findByUuidOrThrow(ownerUuid);
-        owner.setUserType(UserType.DEFAULT);
-
-        saveUserPortOut.save(owner);
-        log.debug("Tipo do usuário atualizado para DEFAULT | ownerUuid: {}", ownerUuid);
-    }
-
-    private void deleteStoreAddress(Address address) {
-        log.debug("Buscando possível endereço para da loja | addressUuid: {}", address.getUuid());
-
-        if (address == null) {
-            log.debug("Loja não possui endereço cadastrado");
-            return;
-        }
-
-        log.info("Excluindo endereço da loja | addressUuid: {}", address.getUuid());
-        deleteAddressPortOut.delete(address);
+        storeDeletionService.delete(store);
     }
 }
