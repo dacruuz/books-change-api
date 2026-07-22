@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface FindPagedBooksPortOut {
     Page<Book> findAllPaged(Pageable pageable);
+    Page<Book> findAllActivePaged(Pageable pageable);
 }

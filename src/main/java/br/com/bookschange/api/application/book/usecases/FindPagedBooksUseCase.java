@@ -30,7 +30,7 @@ public class FindPagedBooksUseCase implements FindPagedBookPortIn {
 
         Pageable pageable = PaginationFactory.createPageable(page, pageSize);
 
-        Page<Book> books = findPagedBooksPortOut.findAllPaged(pageable);
+        Page<Book> books = findPagedBooksPortOut.findAllActivePaged(pageable);
 
         Page<BookResponse> mappedPage = books.map(bookMapper::entityToBookResponse);
 

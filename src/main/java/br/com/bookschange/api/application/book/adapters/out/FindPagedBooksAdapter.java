@@ -18,4 +18,9 @@ public class FindPagedBooksAdapter implements FindPagedBooksPortOut {
     public Page<Book> findAllPaged(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    @Override
+    public Page<Book> findAllActivePaged(Pageable pageable) {
+        return repository.findAllByActiveTrue(pageable);
+    }
 }
