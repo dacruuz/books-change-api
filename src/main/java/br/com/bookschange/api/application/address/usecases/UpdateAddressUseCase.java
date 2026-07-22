@@ -9,6 +9,8 @@ import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
 import br.com.bookschange.api.domain.models.Address;
+import br.com.bookschange.api.shared.services.TextNormalizer;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,13 @@ import java.util.UUID;
 public class UpdateAddressUseCase implements UpdateAddressPortIn {
 
     private final AddressMapper mapper;
-    private final AddressValidator validator;
     private final AddressNormalizer normalizer;
+    private final AddressValidator validator;
     private final FindAddressPortOut findAddressPortOut;
     private final SaveAddressPortOut saveAddressPortOut;
 
     @Override
+    @Transactional
     public AddressResponse update(UUID uuid, UpdateAddressRequest request) {
         log.info("Buscando endereço | uuid: {}", uuid);
 
@@ -36,7 +39,7 @@ public class UpdateAddressUseCase implements UpdateAddressPortIn {
 
         mapper.updateAddressRequestToEntity(request, foundAddress);
 
-        normalizer.normalize(foundAddress);
+        normalizer.normalizeData(foundAddress);
 
         Address updatedAddress = saveAddressPortOut.save(foundAddress);
 

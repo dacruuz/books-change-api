@@ -8,6 +8,8 @@ import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
 import br.com.bookschange.api.domain.models.Address;
+import br.com.bookschange.api.shared.services.TextNormalizer;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class CreateAddressUseCase implements CreateAddressPortIn {
     private final SaveAddressPortOut saveAddressPortOut;
 
     @Override
+    @Transactional
     public AddressResponse create(CreateAddressRequest request) {
         log.info("Criando endereço | cep: {}", request.zipCode());
 
@@ -30,7 +33,7 @@ public class CreateAddressUseCase implements CreateAddressPortIn {
 
         Address address = mapper.createAddressRequestToEntity(request);
 
-        normalizer.normalize(address);
+        normalizer.normalizeData(address);
 
         Address createdAddress = saveAddressPortOut.save(address);
 
