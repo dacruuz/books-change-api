@@ -34,7 +34,6 @@ public class CreateUserUseCase implements CreateUserPortIn {
 
         normalizeData(user);
 
-        user.setActive(true);
         user.setUserType(parsedUserType);
 
         User createdUser = saveUserPortOut.save(user);

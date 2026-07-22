@@ -28,6 +28,7 @@ public abstract class BaseModel {
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = DateUtil.now();
+            active = true;
         }
     }
 }
