@@ -10,59 +10,55 @@ import java.util.Locale;
 @Component
 public class TextNormalizer {
 
-    public String normalize(String value) {
-        if (checkNullValue(value)) return value;
+    private String normalize(String value) {
+        if (value == null) return null;
 
-        return value.trim();
+        value = value.trim();
+
+        return value.isEmpty() ? null : value;
     }
 
     public String normalizeToUpperCase(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return value.trim().toUpperCase();
+        return value == null ? null : value.toUpperCase(Locale.ROOT);
     }
 
     public String normalizeToLowerCase(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return value.trim().toLowerCase();
+        return value == null ? null : value.toLowerCase(Locale.ROOT);
     }
 
     public String normalizeCpf(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return CPFUtil.normalize(value);
+        return value == null ? null : CPFUtil.normalize(value);
     }
 
     public String normalizeCnpj(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return CNPJUtil.normalize(value);
+        return value == null ? null : CNPJUtil.normalize(value);
     }
 
     public String normalizePhone(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return PhoneUtil.normalize(value);
+        return value == null ? null : PhoneUtil.normalize(value);
     }
 
     public String normalizeZipCode(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return value.replaceAll("\\D", "");
+        return value == null ? null : value.replaceAll("\\D", "");
     }
 
     public String capitalize(String value) {
-        if (checkNullValue(value)) return value;
+        value = normalize(value);
 
-        return value.substring(0, 1).toUpperCase(Locale.ROOT)
-                + value.substring(1).toLowerCase(Locale.ROOT);
-    }
+        if (value == null) return null;
 
-    private static boolean checkNullValue(String value) {
-        if (value == null || value.isBlank()) {
-            return true;
-        }
-        return false;
+        return value.substring(0, 1).toUpperCase(Locale.ROOT) + value.substring(1).toLowerCase(Locale.ROOT);
     }
 }
