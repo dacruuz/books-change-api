@@ -9,6 +9,7 @@ import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.enums.UserType;
 import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.User;
+import br.com.bookschange.api.shared.services.TextNormalizer;
 import br.com.bookschange.infrastructure.shared.util.CPFUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class CreateUserUseCase implements CreateUserPortIn {
 
     private final UserMapper mapper;
+    private final TextNormalizer normalizer;
     private final SaveUserPortOut saveUserPortOut;
     private final FindUserPortOut findUserPortOut;
 
@@ -43,9 +45,10 @@ public class CreateUserUseCase implements CreateUserPortIn {
         return mapper.entityToUserResponse(createdUser);
     }
 
-    private void normalizeData(User user) {
-        user.setCpf(CPFUtil.normalize(user.getCpf()));
-        user.setEmail(user.getEmail().trim().toLowerCase());
+    public void normalizeData(User user) {
+        user.setName(normalizer.normalizeToUpperCase(user.getName()));
+        user.setCpf(normalizer.normalizeCpf(user.getCpf()));
+        user.setEmail(normalizer.normalizeToUpperCase(user.getEmail()));
     }
 
     private void validateData(CreateUserRequest request) {
