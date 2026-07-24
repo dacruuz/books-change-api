@@ -41,7 +41,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
         store.setActive(true);
         store.setOwner(owner);
 
-        normalizer.normalize(store);
+        normalizer.normalizeData(store);
 
         saveUserPortOut.save(owner);
         Store createdStore = saveStorePortOut.save(store);

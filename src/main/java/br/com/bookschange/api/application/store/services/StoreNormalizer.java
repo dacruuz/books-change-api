@@ -1,29 +1,22 @@
 package br.com.bookschange.api.application.store.services;
 
 import br.com.bookschange.api.domain.models.Store;
-import br.com.bookschange.infrastructure.shared.util.CNPJUtil;
-import br.com.bookschange.infrastructure.shared.util.PhoneUtil;
+import br.com.bookschange.api.shared.services.TextNormalizer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class StoreNormalizer {
 
-    public void normalize(Store store) {
+    private final TextNormalizer normalizer;
 
-        if (store.getCnpj() != null) {
-            store.setCnpj(CNPJUtil.normalize(store.getCnpj()));
-        }
-
-        if (store.getPhone() != null) {
-            store.setPhone(PhoneUtil.normalize(store.getPhone()));
-        }
-
-        if (store.getCommercialEmail() != null) {
-            store.setCommercialEmail(store.getCommercialEmail().trim().toLowerCase());
-        }
-
-        if (store.getSlug() != null) {
-            store.setSlug(store.getSlug().trim().toLowerCase());
-        }
+    public void normalizeData(Store store) {
+        store.setName(normalizer.normalizeToUpperCase(store.getName()));
+        store.setCnpj(normalizer.normalizeCnpj(store.getCnpj()));
+        store.setCommercialEmail(normalizer.normalizeToUpperCase(store.getCommercialEmail()));
+        store.setPhone(normalizer.normalizePhone(store.getPhone()));
+        store.setSlug(normalizer.normalizeToLowerCase(store.getSlug()));
+        store.setDescription(normalizer.normalizeToUpperCase(store.getDescription()));
     }
 }

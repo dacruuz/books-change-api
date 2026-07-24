@@ -36,7 +36,7 @@ public class UpdateStoreUseCase implements UpdateStorePortIn {
 
         mapper.updateStoreRequestToEntity(request, store);
 
-        normalizer.normalize(store);
+        normalizer.normalizeData(store);
 
         Store updatedStore = saveStorePortOut.save(store);
 
