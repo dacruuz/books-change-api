@@ -47,12 +47,6 @@ Getting started — desenvolvimento local
 Pré-requisitos
 - Java 17+ (ou versão compatível definida no `pom.xml`)
 - Maven (ou usar o wrapper `./mvnw`)
-- Banco de dados (ex.: PostgreSQL) — configure via `application.properties` / `application.yml`
-- (Opcional) Docker & Docker Compose para ambientes rápidos
-
-Clone
-git clone https://github.com/<owner>/books-change-api.git
-cd books-change-api
 
 Build
 - Com Maven wrapper:
@@ -77,35 +71,10 @@ Configuração (exemplo)
     - server.port=8080
 - Para ambientes locais, crie um arquivo `application-local.yml` e ative o perfil `-Dspring.profiles.active=local`.
 
-Banco de dados e migrations
-- Recomendado: Flyway ou Liquibase para migrations.
-- Padrão para dev:
-    - Use um container PostgreSQL com Docker Compose ou instância local.
-    - Execute as migrations automaticamente no startup (configurar Flyway).
-- Exemplo rápido com Docker Compose:
-    - docker-compose.yml (exemplo)
-      version: '3.8'
-      services:
-      db:
-      image: postgres:15
-      environment:
-      POSTGRES_DB: bookschange
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
-      ports:
-      - "5432:5432"
-      volumes:
-      - db-data:/var/lib/postgresql/data
-      volumes:
-      db-data:
-
 Testes
 - Unitários e de integração com JUnit + Mockito (ou libs do Spring).
 - Rodar:
     - ./mvnw test
-- Recomendações:
-    - Use profiles separados para testes (ex.: `test`) e banco em memória (H2) para testes rápidos.
-    - Testes de integração contra container PostgreSQL (Testcontainers) para validar SQL/JPA.
 
 Documentação da API
 - Recomenda-se usar OpenAPI/Swagger (springdoc-openapi) para gerar docs automáticas:
@@ -133,7 +102,6 @@ Contribuindo
 - Checklist mínimo no PR:
     - [ ] Issue vinculada
     - [ ] Testes unitários adicionados
-    - [ ] Testes de integração quando aplicável
     - [ ] Documentação atualizada (endpoints/README)
 
 Roadmap / Ideias futuras
@@ -152,5 +120,4 @@ Licença
 - (Escolha a licença que preferir, ex.: MIT, Apache-2.0). Coloque um arquivo `LICENSE` no repositório.
 
 Contato
-- Autor / Maintainer: @dacruuz (GitHub)
-- Para dúvidas, abra uma issue ou PR no repositório.
+- Autor / Maintainer: @dacruuz (GitHub).

@@ -5,7 +5,7 @@ Objetivo
 
 Pré-requisitos
 - Issue (ou task) criada com escopo, critérios de aceite e cenário(s) de teste.
-- Branch base atualizada (ex.: `main` ou `develop`, conforme convenção).
+- Branch base atualizada (ex.: `master` ou `develop`, conforme convenção).
 
 Estrutura de branch e nomeação
 - Branch: feature/<issue-number>-<short-description>
@@ -38,13 +38,10 @@ Passo a passo para implementação
     - Implementar controllers REST em `infrastructure` (mapeamento DTO <-> domain).
     - Implementar persistência (repositórios JPA, migrations se necessário) em `infrastructure`.
     - Implementar mappers entre entidades e DTOs em `api.shared` ou `infrastructure`.
-6. Testes de integração
-    - Criar testes que cobrem o caminho completo (controller -> use-case -> repository real).
-    - Validar cenários de erro e critérios de aceite.
-7. Documentação
+6. Documentação
     - Atualizar README da feature se houver, documentar endpoints e exemplos.
     - Atualizar changelog ou tarefas relacionadas.
-8. PR
+7. PR
     - Abrir PR contra branch base com descrição da feature, captura de telas/postman collection (se aplicável) e checklist preenchido.
     - Checklist mínimo:
         - [ ] Issue vinculada
