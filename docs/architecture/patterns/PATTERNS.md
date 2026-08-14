@@ -1,10 +1,20 @@
-## Introdução
+# Introdução
 
 Este documento reúne os padrões de projeto e as convenções adotadas neste repositório para orientar implementações coerentes com a arquitetura Hexagonal/Clean aplicada ao sistema. Ele destina‑se a desenvolvedores, revisores de código e novos colaboradores que precisam entender como estruturar artefatos (DTOs, controllers, ports, use‑cases, adapters, repositories), como normalizar e validar dados, e como reaproveitar serviços de aplicação.
 
 O objetivo é reduzir ambiguidade e duplicação, padronizar decisões recorrentes (ex.: uso de `record` para DTOs, MapStruct para mapeamento, Normalizers para padronização de texto) e documentar práticas recomendadas para testes e tratamento de exceções. Cada seção traz responsabilidades, pontos de atenção, recomendações de teste e links para implementações de referência no código.
 
 Use este arquivo como referência ao criar novos endpoints ou ao revisar PRs; quando houver necessidade de exemplos ou detalhes de implementação, consulte os mappers/normalizers/validators referenciados nos links. Para alterar ou complementar um padrão, registre a motivação na issue correspondente e atualize este documento via PR para manter o histórico e a rastreabilidade.
+
+---
+
+## Sumário
+- [Integração entre os padrões (fluxo recomendado dentro do UseCase)](#integração-entre-os-padrões-fluxo-recomendado-dentro-do-usecase)
+- [Testes e validação de qualidade (resumo por padrão)](#testes-e-validação-de-qualidade-resumo-por-padrão)
+- [Riscos e recomendações finais](#riscos-e-recomendações-finais)
+- [Links para busca adicional no repositório](#links-para-busca-adicional-no-repositório-caso-queira-revisar-mais-ocorrências)
+
+---
 
 # Integração entre os padrões (fluxo recomendado dentro do UseCase)
 
@@ -29,16 +39,16 @@ Use este arquivo como referência ao criar novos endpoints ou ao revisar PRs; qu
 # Testes e validação de qualidade (resumo por padrão)
 
 - **BaseModel**: testes de persistência básica e hooks (`@PrePersist`).
-  - [BaseModel](models/BASE_MODEL.md)
+  - [BaseModel](models/base-model.md)
 - **SelectOptionDTO + mappers**: testar conversões de coleções.
-  - [SelectOptionDTO](dtos/SELECT_OPTION_DTO.md)
+  - [SelectOptionDTO](dtos/select-option-dto.md)
 - **TextNormalizer**: testes unitários cobrindo todos os métodos (cpf, cnpj, telefone, zip, upper/lower).
-  - [TextNormalizer](services/TEXT_NORMALIZER.md)
+  - [TextNormalizer](services/text-normalizer.md)
 - **Feature Normalizers**: testar que aplicam transformações corretas ao domain object.
 - **Validators**: testar caminhos positivos e negativos (existência, unicidade).
-  - [Validators](services/VALIDATORS.md)
+  - [Validators](services/validators.md)
 - **StoreDeletionService**: testar cenários (loja sem endereço, proprietário sem loja, falha na deleção de endereço) e que efeitos colaterais ocorrem conforme esperado.
-  - [StoreDeletionService](services/STORE_DELETION_SERVICE.md)
+  - [StoreDeletionService](services/store-deletion-service.md)
 - **UseCases**: mockar ports out e verificar que normalizer e validator são chamados, que transação cobre a operação e que exceptions são lançadas corretamente.
 
 ---
@@ -49,3 +59,13 @@ Use este arquivo como referência ao criar novos endpoints ou ao revisar PRs; qu
 - **Lombok + JPA**: documentar e aplicar práticas seguras para evitar problemas com proxies JPA.
 - **Normalização**: documentar campos normalizados e garantir idempotência; evitar perda de dados não-intencional.
 - **Application Services reutilizáveis**: mantê-los focados, bem testados e com contratos claros para evitar acoplamento excessivo entre UseCases.
+
+---
+
+# Links para busca adicional no repositório (caso queira revisar mais ocorrências)
+
+- Buscar “Normalizer": https://github.com/dacruuz/books-change-api/search?q=Normalizer&type=code
+- Buscar “BaseModel": https://github.com/dacruuz/books-change-api/search?q=BaseModel&type=code
+- Buscar “SelectOptionDTO": https://github.com/dacruuz/books-change-api/search?q=SelectOptionDTO&type=code
+- Buscar “Validator": https://github.com/dacruuz/books-change-api/search?q=Validator&type=code
+- Buscar “StoreDeletionService": https://github.com/dacruuz/books-change-api/search?q=StoreDeletionService&type=code
