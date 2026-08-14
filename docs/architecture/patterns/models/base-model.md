@@ -1,3 +1,4 @@
+<a name="base-model"></a>
 # BaseModel — modelo base para entidades
 
 ## Propósito
