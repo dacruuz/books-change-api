@@ -19,5 +19,4 @@ Centralizar validações de negócio simples que não pertencem ao domínio (ex.
 - Unit tests cobrindo cenários de validação e mensagens/exceções esperadas.
 
 ## Código de referência
-- [StoreValidator.java](https://github.com/dacruuz/books-change-api/blob/documentation/issue-59-documentacao-api/src/main/java/br/com/bookschange/api/application/store/services/StoreValidator.java)
-- [AddressValidator.java](https://github.com/dacruuz/books-change-api/blob/documentation/issue-59/documentacao-api/src/main/java/br/com/bookschange/api/application/address/services/AddressValidator.java)
+- [AddressValidator.java](https://github.com/dacruuz/books-change-api/blob/documentation/issue-59-documentacao-api/src/main/java/br/com/bookschange/api/application/address/services/AddressValidator.java)
