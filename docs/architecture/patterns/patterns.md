@@ -45,7 +45,7 @@ Use este arquivo como referência ao criar novos endpoints ou ao revisar PRs; qu
 - **TextNormalizer**: testes unitários cobrindo todos os métodos (cpf, cnpj, telefone, zip, upper/lower).
   - [TextNormalizer](services/text-normalizer.md)
 - **Feature Normalizers**: testar que aplicam transformações corretas ao domain object.
-- **Validators**: testar caminhos positivos e negativos (existência, unicidade).
+- **Validators**: testar caminhos positivos e negativos (existência, unicidade). Não é padrão para caso em que essa regra é validada em apenas um local.
   - [Validators](services/validators.md)
 - **StoreDeletionService**: testar cenários (loja sem endereço, proprietário sem loja, falha na deleção de endereço) e que efeitos colaterais ocorrem conforme esperado.
   - [StoreDeletionService](services/store-deletion-service.md)

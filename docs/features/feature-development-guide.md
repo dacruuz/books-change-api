@@ -61,15 +61,17 @@ Padrões e convenções adicionais
 
 Exemplo de fluxo para "criar endereço"
 1. Issue #0033 criada com critérios de aceite.
-2. Criar branch `feature/0033-endereco-crud`.
+2. Criar branch `feature/issue-0033-endereco-crud` ou `feature/issue-33-endereco-crud` (A pasta onde vai estar essa branch vai depender de qual tag foi utilizada na issue no board).
 3. Implementar `Address` (value object) em `api.domain`.
-4. Implementar porta `AddressRepository` (interface) em `api.domain`/`application`.
-5. Implementar use-case `CreateAddressUseCase` em `api.application`.
-6. Implementar `AddressController` + DTOs em `infrastructure`.
-7. Implementar `JpaAddressRepository` em `infrastructure`.
-8. Testes unitários + integração.
-9. PR com checklist e documentação do endpoint.
-10. Revisão, ajustes e merge.
+4. Implementar `AddressController` em `api.application.<feature>.in`.
+5. Implementar DTO's de request e response em `api.application.<feature>.in.dtos`.
+6. Criar interface `CreateAddressPortIn` em `api.application.<feature>.ports.in` (O retorno dela é o DTO de response ou void);
+7. Implementar `CreateAddressPorIn` no use-case `CreateAddressUseCase` em `api.application.<feature>.usecases`.
+8. Criar interface `CreateAddressPorOut` em `api.application.<feature>.ports.out` (O retorno dela é a entidade `Address` ou void).
+9. Implementar `JpaAddressRepository` em `api.application.<feature>.out.repositories`.
+10. Testes unitários + integração.
+11. PR com checklist e documentação do endpoint.
+12. Revisão, ajustes e merge.
 
 Notas finais
 - Os scripts `common-feature-structure.sh` / `.ps1` no root ajudam a padronizar a criação inicial de arquivos/pastas para cada feature — adote-os como ponto de partida.

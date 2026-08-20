@@ -14,7 +14,11 @@ Princípios e responsabilidades
 - Casos de uso / Application Services: coordenam fluxos de negócio e orquestram portas do domínio; ficam em `api.application`.
 - Portas e adaptadores (Hexagonal):
     - Portas (interfaces) definidas no domínio ou na camada de aplicação.
-    - Adaptadores de saída (implementações de repositórios, clientes externos) e de entrada (controllers, mappers) ficam em `infrastructure` ou em `api.application` quando fazem orquestração de camada.
+    - Adaptadores de saída (implementações de repositórios, clientes externos) e de entrada (controllers, mappers). 
+      - Entrada: Controllers ficam em `api.application.<feature>.adapters.in`.
+      - Entrada: Mappers ficam em `api.application.<feature>.mappers`.
+      - Saída: Adapters ficam em `api.application.<feature>.adapters.out`.
+      - Saída: Repositories (Repositórios) ficam em `api.application.<feature>.adapters.out.repositories`.
 - Separação de responsabilidades:
     - Camadas não dependem de implementações concretas — dependem de interfaces.
     - Infraestrutura depende de interfaces do domínio/aplicação, não o contrário.

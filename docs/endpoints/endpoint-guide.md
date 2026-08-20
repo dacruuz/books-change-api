@@ -46,7 +46,7 @@ Este documento descreve, de forma prática e objetiva, o propósito, convençõe
 - Propósito:
     - Adaptador que converte requisições HTTP em chamadas para a porta de entrada (port in / use-case) e converte respostas para HTTP.
 - Padrões:
-    - Estereótipos: @RestController / @Controller + @RequestMapping de versão (/api/v1/...).
+    - Estereótipos: @RestController / @Controller + @RequestMapping.
     - Injeção via construtor da porta de entrada (port in).
     - Uso de @Validated/@Valid para acionamento das validações de DTOs.
     - Deve ser _thin_: orquestrar validação, mapeamento request→input, chamar use-case e montar ResponseEntity com códigos apropriados (201, 200, 204, 400, 404, 409).
@@ -86,7 +86,7 @@ Este documento descreve, de forma prática e objetiva, o propósito, convençõe
 - Propósito:
     - Implementar as ports out para conectar-se a sistemas externos (APIs, filas, serviços internos).
 - Padrões:
-    - Localização: infrastructure.adapters (ou infra/<feature>/adapter).
+    - Localização: api/application/<feature>/adapters/out.
     - Injeção: constructor injection de clientes/beans de infra.
     - Aspectos não-funcionais: definir políticas de retry, timeouts, bulkheads/circuit-breakers quando aplicável; não replicar lógica de negócio.
 - Testabilidade:
@@ -99,7 +99,7 @@ Este documento descreve, de forma prática e objetiva, o propósito, convençõe
     - Implementar persistência relacional para entidades de domínio.
 - Padrões:
     - Preferir interfaces Spring Data (extends JpaRepository) quando possível para operações CRUD básicas.
-    - Se for implementação custom (por exemplo, consultas complexas), criar uma implementação em infrastructure/persistence que realize o mapeamento Entity ↔ Domain.
+    - Se for implementação custom (por exemplo, consultas complexas), criar uma implementação em api/application/<feature>/adapters/out/repositories que realize o mapeamento Entity ↔ Domain.
     - Usar @Repository e constructor injection para dependências.
 - Transações:
     - A camada de aplicação (use-case) gerencia transações; repository não deve tentar gerenciar transações na maior parte dos casos.

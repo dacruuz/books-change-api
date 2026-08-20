@@ -2,7 +2,9 @@
 # Validators (serviços de validação por feature)
 
 ## Propósito
-Centralizar validações de negócio simples que não pertencem ao domínio (ex.: existência de email/cpf/cnpj, formato de CEP) e evitar duplicação de lógica entre UseCases.
+Centralizar validações de negócio simples que não pertencem ao domínio (ex.: existência de email/cpf/cnpj, formato de CEP) e evitar duplicação de lógica entre UseCases. Não é uso padrão do sistema.
+
+A ideia de criar um validador serve para casos em que a validação da regra precisa acontecer em mais de um use case, caso só precise ser feito em um local não é necessário o uso de um validator dedicado. `User` e `Category` são exemplos disso.
 
 ## Padrões observados
 - Validators são componentes (beans) injetados nos UseCases; executam validações e lançam `BusinessException` (ou outra exceção de domínio) quando regra é violada.
