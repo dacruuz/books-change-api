@@ -1,5 +1,5 @@
 ---
-name: Template Defalt
+name: Template Default
 about: Default template for issues
 title: ''
 labels: ''
