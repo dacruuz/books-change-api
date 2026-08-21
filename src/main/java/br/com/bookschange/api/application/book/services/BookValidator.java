@@ -11,6 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookValidator {
 
+    /**
+     * Verifica se a lista de categorias está vazia
+     * @param categories
+     */
     public void validateCategories(List<Category> categories) {
         if (categories.isEmpty()) {
             throw new NotFoundException("Categoria não encontrada");
