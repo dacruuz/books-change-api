@@ -8,8 +8,6 @@
 - Branches
 - Convenções de commit
 - Pull Request & Merge
-- Recomendações e ferramentas
-- Fluxo rápido (comandos)
 
 ---
 
@@ -41,6 +39,60 @@
     - Uso: mudanças relacionadas a testes.
 - refactor: `refactor/<ISSUE>-<descrição>`
     - Uso: mudanças arquitetural ou escrita que não alteração o fluxo.
-
+- improvement: `improvement/<ISSUE>-<descrição>
+    - Uso: melhoria no código (legilibilidade, fluxo, etc.).
+    - Ex.: `improvement/<ISSUE>-melhorando-fluxo-cadastro-livro`
 ---
+
+## 2) Convenções de commit
+
+Os commits devem seguir uma convenção baseada no padrão Conventional Commits.
+
+### Formato
+`<tipo>(<escopo>): <descrição>`
+
+Exemplo:
+
+`feat(book): adiciona endpoint para cadastro de livro`
+
+O escopo é opcional, mas deixa seu commit mais descritivo:
+
+`feat: adiciona endpoint para cadastro de livro`
+
+### Tipos de commit
+
+| Tipo          | Uso |
+|---------------|-----|
+| `feat`        | Nova funcionalidade |
+| `fix`         | Correção de bug |
+| `refactor`    | Refatoração sem alteração de comportamento |
+| `test`        | Criação ou alteração de testes |
+| `docs`        | Alterações na documentação |
+| `chore`       | Manutenção, dependências e configurações |
+| `build`       | Alterações relacionadas ao processo de build |
+| `ci`          | Alterações em CI/CD |
+| `perf`        | Melhorias de performance |
+| `style`       | Formatação ou alterações que não afetam a lógica |
+| `improvement` | Melhoria no código |
+
+## 3) Pull Request & Merge
+
+### Descrição
+Os PR's são abertos e vinculados à issue no board do github.
+É necessário a abertura de dois Pull Requests, que são para as branches principais `master` e `develop`.
+
+### PR branch `master`
+O nome da branch é a convenção descrita nesse mesmo documento. Aqui é onde a atividade é feita normalmente.
+
+- Criar branch seguindo a convenção;
+- Implementar a atividade;
+- Abrir PR e vincular à issue.
+
+### PR branch `develop`
+Aqui é aberto um PR apontando para a branch `develop`. O padrão de nomemclatura utilizado é `integration/<nome-branch-master>`.
+Aqui já considere que o passo a passo do padrão da `master` foi realizado.
+
+- Criar branch para `develop` com o prefixo `integration/`;
+- Fazer o merge da branch da `master` para a branch de `integration`;
+- Abrir PR apontando para a `develop` e vincular à issue.
 
