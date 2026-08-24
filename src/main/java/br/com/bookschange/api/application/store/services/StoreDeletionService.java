@@ -31,7 +31,12 @@ public class StoreDeletionService {
     public void delete(Store store) {
         log.info("Iniciando exclusão da loja | uuid: {}", store.getUuid());
 
-        deleteStoreAddress(store.getAddress());
+        if (store.getAddress() != null) {
+            deleteStoreAddress(store.getAddress());
+        } else {
+            log.warn("Nenhum endereço encontrado associado à loja");
+        }
+
         updateOwnerUserType(store.getOwner());
 
         deleteStorePortOut.delete(store);
@@ -48,14 +53,8 @@ public class StoreDeletionService {
     }
 
     private void deleteStoreAddress(Address address) {
-        log.debug("Buscando possível endereço para da loja | addressUuid: {}", address.getUuid());
-
-        if (address == null) {
-            log.debug("Loja não possui endereço cadastrado");
-            return;
-        }
-
         log.info("Excluindo endereço da loja | addressUuid: {}", address.getUuid());
+
         deleteAddressPortOut.delete(address);
     }
 }
