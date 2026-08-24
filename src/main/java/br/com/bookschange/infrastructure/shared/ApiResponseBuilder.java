@@ -70,6 +70,15 @@ public class ApiResponseBuilder {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    public ResponseEntity<?> buildInvalidEnumError(String message) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("message", "Erro de validação");
+        response.put("errors", message);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     public ResponseEntity<?> buildCreated(Object data) {
         Map<String, Object> response = new LinkedHashMap<>();
 

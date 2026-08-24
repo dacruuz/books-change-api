@@ -1,3 +1,5 @@
+# This is used for Linux or MAC users
+
 #!/bin/bash
 
 FEATURE=$1
