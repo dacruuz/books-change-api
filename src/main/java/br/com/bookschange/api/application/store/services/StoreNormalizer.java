@@ -14,7 +14,7 @@ public class StoreNormalizer {
     public void normalizeData(Store store) {
         store.setName(normalizer.normalizeToUpperCase(store.getName()));
         store.setCnpj(normalizer.normalizeCnpj(store.getCnpj()));
-        store.setCommercialEmail(normalizer.normalizeToUpperCase(store.getCommercialEmail()));
+        store.setCommercialEmail(normalizer.normalizeEmail(store.getCommercialEmail()));
         store.setPhone(normalizer.normalizePhone(store.getPhone()));
         store.setSlug(normalizer.normalizeToLowerCase(store.getSlug()));
         store.setDescription(normalizer.normalizeToUpperCase(store.getDescription()));
