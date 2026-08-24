@@ -14,7 +14,7 @@ on:
 jobs:
   build-and-test:
     name: Build & Tests
-    runs-on: ubunto-lastest
+    runs-on: ubuntu-lastest
     timeout-minutes: 15
 
     steps:
