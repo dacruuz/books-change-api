@@ -30,6 +30,12 @@ public class TextNormalizer {
         return value == null ? null : value.toLowerCase(Locale.ROOT);
     }
 
+    public String normalizeEmail(String value) {
+        value = normalize(value);
+
+        return value == null ? null : normalizeToUpperCase(value);
+    }
+
     public String normalizeCpf(String value) {
         value = normalize(value);
 
