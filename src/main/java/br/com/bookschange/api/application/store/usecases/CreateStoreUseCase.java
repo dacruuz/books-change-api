@@ -32,7 +32,7 @@ public class CreateStoreUseCase implements CreateStorePortIn {
     public StoreResponse create(CreateStoreRequest request) {
         log.info("Iniciando criação de loja | e-mail: {}", request.commercialEmail());
 
-        validator.validateCreation(request.commercialEmail(), request.cnpj(), request.slug());
+        validator.validateCreation(request.commercialEmail(), request.cnpj(), request.slug(), request.ownerUuid());
 
         User owner = findUserPortOut.findByUuidOrThrow(request.ownerUuid());
         owner.setUserType(UserType.STORE); // Changing userType to STORE
