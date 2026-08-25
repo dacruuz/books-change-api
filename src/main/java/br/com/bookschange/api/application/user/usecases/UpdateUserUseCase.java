@@ -29,9 +29,10 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
         log.info("Buscando usuário para edição | uuid: {}", uuid);
 
         User user = findUserPortOut.findByUuidOrThrow(uuid);
-        normalizer.normalizeToUpperCase(user.getName());
 
         mapper.updateUserRequestToEntity(request, user);
+
+        user.setName(normalizer.normalizeToUpperCase(user.getName()));
 
         User updatedUser = saveUserPortOut.save(user);
 
