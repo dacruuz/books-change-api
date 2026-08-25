@@ -7,6 +7,7 @@ import br.com.bookschange.api.application.user.ports.in.UpdateUserPortIn;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.application.user.ports.out.SaveUserPortOut;
 import br.com.bookschange.api.domain.models.User;
+import br.com.bookschange.api.shared.services.TextNormalizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class UpdateUserUseCase implements UpdateUserPortIn {
 
     private final UserMapper mapper;
+    private final TextNormalizer normalizer;
     private final FindUserPortOut findUserPortOut;
     private final SaveUserPortOut saveUserPortOut;
 
@@ -29,6 +31,8 @@ public class UpdateUserUseCase implements UpdateUserPortIn {
         User user = findUserPortOut.findByUuidOrThrow(uuid);
 
         mapper.updateUserRequestToEntity(request, user);
+
+        user.setName(normalizer.normalizeToUpperCase(user.getName()));
 
         User updatedUser = saveUserPortOut.save(user);
 

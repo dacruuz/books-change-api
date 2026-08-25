@@ -57,7 +57,7 @@ public class CreateUserUseCase implements CreateUserPortIn {
     }
 
     private void validateEmail(CreateUserRequest request) {
-        String normalizedEmail = request.email().trim().toLowerCase();
+        String normalizedEmail = normalizer.normalizeEmail(request.email());
         boolean emailAlreadyExists = findUserPortOut.existsByEmail(normalizedEmail);
 
         if (emailAlreadyExists) {
@@ -67,12 +67,17 @@ public class CreateUserUseCase implements CreateUserPortIn {
     }
 
     private void validateCpf(CreateUserRequest request) {
-        String normalizedCpf = CPFUtil.normalize(request.cpf());
+        String normalizedCpf = normalizer.normalizeCpf(request.cpf());
         boolean cpfAlreadyExists = findUserPortOut.existsByCpf(normalizedCpf);
 
         if (cpfAlreadyExists) {
             log.warn("Tentativa de cadastro com CPF já existente");
             throw new BusinessException("Já existe um usuário cadastrado com esse cpf");
+        }
+        
+        if (normalizedCpf.length() != 11) {
+            log.warn("Tentativa de cadastro de cpf com tamanho inválido");
+            throw new BusinessException("O tamanho do cpf está incorreto");
         }
     }
 }
