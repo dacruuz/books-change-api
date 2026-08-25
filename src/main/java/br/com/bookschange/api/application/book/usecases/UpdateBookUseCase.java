@@ -7,6 +7,7 @@ import br.com.bookschange.api.application.book.ports.in.UpdateBookPortIn;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.application.book.ports.out.SaveBookPortOut;
 import br.com.bookschange.api.application.book.services.BookNormalizer;
+import br.com.bookschange.api.application.book.services.BookValidator;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.Category;
@@ -24,6 +25,7 @@ public class UpdateBookUseCase implements UpdateBookPortIn {
 
     private final BookMapper mapper;
     private final BookNormalizer normalizer;
+    private final BookValidator validator;
     private final FindBookPortOut findBookPortOut;
     private final FindCategoryPortOut findCategoryPortOut;
     private final SaveBookPortOut saveBookPortOut;
@@ -34,6 +36,8 @@ public class UpdateBookUseCase implements UpdateBookPortIn {
 
         Book book = findBookPortOut.findByUuidOrThrow(uuid);
         List<Category> categories = findCategoryPortOut.findAllByUuids(request.categories());
+
+        validator.validateCategories(categories);
 
         mapper.updateBookFromRequest(request, book);
 
