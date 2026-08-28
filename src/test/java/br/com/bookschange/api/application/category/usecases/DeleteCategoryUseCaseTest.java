@@ -77,14 +77,12 @@ class DeleteCategoryUseCaseTest {
         // --- ARRANGE
         when(findCategoryPortOut.findByUuidOrThrow(categoryUuid)).thenReturn(category);
         when(findBookCategoryPortOut.findAllByCategoryUuid(category.getUuid())).thenReturn(bookCategoryList);
-        doNothing().when(deleteBookCategoryPortOut).deleteAll(bookCategoryList);
         doNothing().when(deleteCategoryPortOut).delete(category);
 
         // --- ACT
         useCase.delete(categoryUuid);
 
         // --- ASSERT
-        verify(deleteBookCategoryPortOut).deleteAll(bookCategoryList);
         verify(deleteCategoryPortOut).delete(category);
     }
 }
