@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -27,6 +28,7 @@ class FindCategoryUseCaseTest {
     @InjectMocks
     FindCategoryUseCase useCase;
 
+    private UUID categoryUuid;
     private Category category;
     private List<Category> categoryList;
     private CategoryResponse expectedResponse;
@@ -34,7 +36,9 @@ class FindCategoryUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        categoryUuid = UUID.randomUUID();
         category = mock(Category.class);
+        category.setUuid(categoryUuid);
         expectedResponse = mock(CategoryResponse.class);
 
         categoryList = new ArrayList<>();
@@ -57,6 +61,22 @@ class FindCategoryUseCaseTest {
         // --- ASSERT
         assertEquals(expectedResponseList, result);
         verify(findCategoryPortOut).findAll();
+        verify(mapper).entityToCategoryResponse(category);
+    }
+
+    @Test
+    @DisplayName("Deve buscar uma categoria pelo uuid com sucesso")
+    void shouldFindCategoryByUuidSuccessfully() {
+        // --- ARRANGE
+        when(findCategoryPortOut.findByUuidOrThrow(categoryUuid)).thenReturn(category);
+        when(mapper.entityToCategoryResponse(category)).thenReturn(expectedResponse);
+
+        // --- ACT
+        CategoryResponse result = useCase.findByUuid(categoryUuid);
+
+        // --- ASSERT
+        assertEquals(expectedResponse, result);
+        verify(findCategoryPortOut).findByUuidOrThrow(categoryUuid);
         verify(mapper).entityToCategoryResponse(category);
     }
 }
