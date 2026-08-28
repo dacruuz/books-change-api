@@ -56,7 +56,7 @@ public class CreateCategoryUseCaseTest {
 
     @Test
     @DisplayName("Deve criar uma nova categoria com sucesso")
-    void shouldCreateNewCategoryNormally() {
+    void shouldCreateNewCategorySuccessfully() {
         // --- ARRANGE ---
         when(normalizer.normalizeToLowerCase(request.slug())).thenReturn(VALID_SLUG_LOWERCASED);
         when(findCategoryPortOut.existsBySlug(VALID_SLUG_LOWERCASED)).thenReturn(false);
