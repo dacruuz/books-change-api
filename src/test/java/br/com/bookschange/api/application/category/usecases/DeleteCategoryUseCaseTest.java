@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -92,12 +93,13 @@ class DeleteCategoryUseCaseTest {
     @DisplayName("Deve retornar NotFoundException quando não encontrar a categoria")
     void shouldThrowNotFoundExceptionWhenCategoryIsNotFound() {
         // --- ARRANGE
-        when(findCategoryPortOut.findByUuidOrThrow(categoryUuid)).thenThrow(NotFoundException.class);
+        when(findCategoryPortOut.findByUuidOrThrow(categoryUuid)).thenThrow(new NotFoundException("Categoria não encontrada"));
 
         // --- ACT + ASSERT
         NotFoundException e = assertThrows(NotFoundException.class, () -> useCase.delete(categoryUuid));
 
         // --- ASSERT
+        assertEquals("Categoria não encontrada", e.getMessage());
         verify(findBookCategoryPortOut, never()).findAllByCategoryUuid(any());
         verify(deleteBookCategoryPortOut, never()).deleteAll(any());
         verify(deleteCategoryPortOut, never()).delete(any());

@@ -96,6 +96,7 @@ public class CreateCategoryUseCaseTest {
         BusinessException e = assertThrows(BusinessException.class, () -> useCase.create(request));
 
         // --- ASSERT ---
+        assertEquals("Já existe uma categoria cadastrada com esse identificador", e.getMessage());
         verify(normalizer, times(1)).normalizeToLowerCase(anyString());
         verify(findCategoryPortOut, times(1)).existsBySlug(anyString());
         verify(saveCategoryPortOut, never()).save(any());
