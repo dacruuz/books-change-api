@@ -4,6 +4,7 @@ import br.com.bookschange.api.application.bookcategory.ports.out.DeleteBookCateg
 import br.com.bookschange.api.application.bookcategory.ports.out.FindBookCategoryPortOut;
 import br.com.bookschange.api.application.category.ports.out.DeleteCategoryPortOut;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
 import br.com.bookschange.api.domain.models.Category;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -84,5 +86,20 @@ class DeleteCategoryUseCaseTest {
 
         // --- ASSERT
         verify(deleteCategoryPortOut).delete(category);
+    }
+
+    @Test
+    @DisplayName("Deve retornar NotFoundException quando não encontrar a categoria")
+    void shouldThrowNotFoundExceptionWhenCategoryIsNotFound() {
+        // --- ARRANGE
+        when(findCategoryPortOut.findByUuidOrThrow(categoryUuid)).thenThrow(NotFoundException.class);
+
+        // --- ACT + ASSERT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> useCase.delete(categoryUuid));
+
+        // --- ASSERT
+        verify(findBookCategoryPortOut, never()).findAllByCategoryUuid(any());
+        verify(deleteBookCategoryPortOut, never()).deleteAll(any());
+        verify(deleteCategoryPortOut, never()).delete(any());
     }
 }
