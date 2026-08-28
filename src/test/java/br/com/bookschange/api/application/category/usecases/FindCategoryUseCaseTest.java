@@ -3,6 +3,7 @@ package br.com.bookschange.api.application.category.usecases;
 import br.com.bookschange.api.application.category.adapters.in.dtos.response.CategoryResponse;
 import br.com.bookschange.api.application.category.mappers.CategoryMapper;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,5 +80,20 @@ class FindCategoryUseCaseTest {
         assertEquals(expectedResponse, result);
         verify(findCategoryPortOut).findByUuidOrThrow(categoryUuid);
         verify(mapper).entityToCategoryResponse(category);
+    }
+
+    @Test
+    @DisplayName("Deve lançar NotFoundException quando não encontrar uma categoria pelo UUID")
+    void shouldThrowNotFoundExceptionWhenCategoryIsNotFoundByUuid() {
+        // --- ARRANGE
+        when(findCategoryPortOut.findByUuidOrThrow(any())).thenThrow(new NotFoundException("Categoria não encontrada"));
+
+        // --- ACT + ASSERT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> useCase.findByUuid(categoryUuid));
+
+        // --- ASSERT
+        assertEquals("Categoria não encontrada", e.getMessage());
+        verify(findCategoryPortOut).findByUuidOrThrow(any());
+        verify(mapper, never()).entityToCategoryResponse(any());
     }
 }
