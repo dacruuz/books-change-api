@@ -33,7 +33,7 @@ class DeleteCategoryUseCaseTest {
     @Mock private DeleteBookCategoryPortOut deleteBookCategoryPortOut;
 
     @InjectMocks
-    DeleteCategoryUseCase useCase;
+    private DeleteCategoryUseCase useCase;
 
     private final UUID categoryUuid = UUID.randomUUID();
     private Category category;
