@@ -9,6 +9,7 @@ import br.com.bookschange.api.application.book.services.BookValidator;
 import br.com.bookschange.api.application.category.ports.out.FindCategoryPortOut;
 import br.com.bookschange.api.application.user.ports.out.FindUserPortOut;
 import br.com.bookschange.api.domain.enums.CurrentCondition;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
 import br.com.bookschange.api.domain.models.Category;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -112,5 +114,19 @@ class CreateBookUseCaseTest {
         verify(mapper, times(1)).entityToBookResponse(any());
         verify(findUserPortOut).findByUuidOrThrow(any());
         verify(findCategoryPortOut).findAllByUuids(anyList());
+    }
+
+    @Test
+    @DisplayName("Deve lançar NotFoundException quando o usuário não for encontrado pelo uuid")
+    void shouldThrowNotFoundExceptionWhenOwnerBookIsNotFoundByUuid() {
+        when(findUserPortOut.findByUuidOrThrow(any())).thenThrow(new NotFoundException("Usuário não encontrado"));
+
+        assertThrows(NotFoundException.class, () -> useCase.create(request));
+
+        verify(validator, never()).validateCategories(anyList());
+        verify(normalizer, never()).normalizeData(any());
+        verify(mapper, never()).createBookRequestToEntity(any());
+        verify(mapper, never()).entityToBookResponse(any());
+        verify(findCategoryPortOut, never()).findAllByUuids(anyList());
     }
 }
