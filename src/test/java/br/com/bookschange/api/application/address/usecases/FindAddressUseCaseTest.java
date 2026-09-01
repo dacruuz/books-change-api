@@ -30,7 +30,6 @@ class FindAddressUseCaseTest {
     void shouldFindAddressByUuidSuccessfully() {
         UUID uuid = UUID.randomUUID();
         Address address = new Address();
-        address.setUuid(uuid);
         AddressResponse expectedResponse = mock(AddressResponse.class);
 
         when(findAddressPortOut.findByUuidOrThrow(uuid)).thenReturn(address);
@@ -39,8 +38,7 @@ class FindAddressUseCaseTest {
         AddressResponse result = useCase.findByUuid(uuid);
 
         assertEquals(expectedResponse, result);
-        assertEquals(uuid, address.getUuid());
-        verify(findAddressPortOut).findByUuidOrThrow(any());
-        verify(mapper).entityToAddressResponse(any());
+        verify(findAddressPortOut).findByUuidOrThrow(uuid);
+        verify(mapper).entityToAddressResponse(address);
     }
 }

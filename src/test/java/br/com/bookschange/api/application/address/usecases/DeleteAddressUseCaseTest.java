@@ -30,14 +30,12 @@ class DeleteAddressUseCaseTest {
     void shouldDeleteAddressSuccessfully() {
         UUID uuid = UUID.randomUUID();
         Address address = new Address();
-        address.setUuid(uuid);
 
         when(findAddressPortOut.findByUuidOrThrow(uuid)).thenReturn(address);
         doNothing().when(deleteAddressPortOut).delete(address);
 
         useCase.delete(uuid);
 
-        assertEquals(uuid, address.getUuid());
         verify(findAddressPortOut, times(1)).findByUuidOrThrow(any());
         verify(deleteAddressPortOut, times(1)).delete(any());
     }
