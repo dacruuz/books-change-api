@@ -33,11 +33,11 @@ class UpdateAddressUseCaseTest {
     @Mock private SaveAddressPortOut saveAddressPortOut;
 
     @InjectMocks
-    UpdateAddressUseCase useCase;
+    private UpdateAddressUseCase useCase;
 
-    UUID uuid;
-    Address address;
-    UpdateAddressRequest request;
+    private UUID uuid;
+    private Address address;
+    private UpdateAddressRequest request;
 
     @BeforeEach
     void setUp() {

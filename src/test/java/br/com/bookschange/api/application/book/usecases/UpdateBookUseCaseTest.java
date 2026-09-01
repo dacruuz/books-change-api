@@ -38,12 +38,12 @@ class UpdateBookUseCaseTest {
     @Mock private SaveBookPortOut saveBookPortOut;
 
     @InjectMocks
-    UpdateBookUseCase useCase;
+    private UpdateBookUseCase useCase;
 
     private Book book;
     private Category category;
     private UpdateBookRequest request;
-    UUID bookUuid;
+    private UUID bookUuid;
 
     @BeforeEach
     void setUp() {
