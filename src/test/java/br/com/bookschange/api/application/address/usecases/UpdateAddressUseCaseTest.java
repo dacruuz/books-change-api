@@ -7,6 +7,7 @@ import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
 import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Address;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -85,5 +86,20 @@ class UpdateAddressUseCaseTest {
         verify(normalizer).normalizeData(address);
         verify(saveAddressPortOut).save(addressCaptor.capture());
         verify(mapper).entityToAddressResponse(address);
+    }
+
+    @Test
+    @DisplayName("Deve lançar NotFoundException qunado o endereço não é encontrado pelo uuid")
+    void shouldThrowNotFoundExceptionWhenAddressWasNotFindByUuid() {
+        when(findAddressPortOut.findByUuidOrThrow(uuid)).thenThrow(new NotFoundException("Endereço não encontrado"));
+
+        assertThrows(NotFoundException.class, () -> useCase.update(uuid, request));
+
+        verify(findAddressPortOut).findByUuidOrThrow(uuid);
+        verify(validator, never()).validateZipCode(any());
+        verify(mapper, never()).updateAddressRequestToEntity(any(), any());
+        verify(normalizer, never()).normalizeData(any());
+        verify(saveAddressPortOut, never()).save(any());
+        verify(mapper, never()).entityToAddressResponse(any());
     }
 }
