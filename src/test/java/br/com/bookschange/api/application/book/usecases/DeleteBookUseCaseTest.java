@@ -30,10 +30,10 @@ class DeleteBookUseCaseTest {
     @Mock private DeleteBookCategoryPortOut deleteBookCategoryPortOut;
 
     @InjectMocks
-    DeleteBookUseCase useCase;
+    private DeleteBookUseCase useCase;
 
     private Book book;
-    UUID bookUuid;
+    private UUID bookUuid;
 
     @BeforeEach
     void setUp() {

@@ -29,7 +29,7 @@ class CreateAddressUseCaseTest {
     @Mock private SaveAddressPortOut saveAddressPortOut;
 
     @InjectMocks
-    CreateAddressUseCase useCase;
+    private CreateAddressUseCase useCase;
 
     private CreateAddressRequest request;
     private Address address;

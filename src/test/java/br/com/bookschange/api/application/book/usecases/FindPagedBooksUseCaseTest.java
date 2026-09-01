@@ -34,12 +34,12 @@ class FindPagedBooksUseCaseTest {
     @Mock private FindPagedBooksPortOut findPagedBooksPortOut;
 
     @InjectMocks
-    FindPagedBooksUseCase useCase;
+    private FindPagedBooksUseCase useCase;
 
     private Book book;
     private BookResponse bookResponse;
-    int page;
-    int pageSize;
+    private int page;
+    private int pageSize;
 
     @BeforeEach
     void setUp() {

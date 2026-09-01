@@ -25,7 +25,7 @@ class FindBookUseCaseTest {
     @Mock private FindBookPortOut findBookPortOut;
 
     @InjectMocks
-    FindBookUseCase useCase;
+    private FindBookUseCase useCase;
 
     private UUID uuid;
     private Book book;

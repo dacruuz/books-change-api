@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 class BookValidatorTest {
 
     @InjectMocks
-    BookValidator service;
+    private BookValidator service;
 
     @Test
     @DisplayName("Deve validar a lista de categorias do livro")

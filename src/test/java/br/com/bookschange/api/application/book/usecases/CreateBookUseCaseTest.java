@@ -42,7 +42,7 @@ class CreateBookUseCaseTest {
     @Mock private FindCategoryPortOut findCategoryPortOut;
 
     @InjectMocks
-    CreateBookUseCase useCase;
+    private CreateBookUseCase useCase;
 
     public static final String LIVRO_NOME = "Livro nome";
     public static final String LIVRO_AUTOR = "Livro autor";

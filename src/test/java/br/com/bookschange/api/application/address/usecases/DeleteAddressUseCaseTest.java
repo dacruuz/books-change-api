@@ -23,7 +23,7 @@ class DeleteAddressUseCaseTest {
     @Mock private DeleteAddressPortOut deleteAddressPortOut;
 
     @InjectMocks
-    DeleteAddressUseCase useCase;
+    private DeleteAddressUseCase useCase;
 
     @Test
     @DisplayName("Deve excluir um endereço com sucesso")

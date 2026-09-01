@@ -20,7 +20,7 @@ class BookNormalizerTest {
     @Mock private TextNormalizer normalizer;
 
     @InjectMocks
-    BookNormalizer service;
+    private BookNormalizer service;
 
     private Book book;
 

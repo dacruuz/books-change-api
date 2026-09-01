@@ -25,10 +25,10 @@ class FindAddressUseCaseTest {
     @Mock private FindAddressPortOut findAddressPortOut;
 
     @InjectMocks
-    FindAddressUseCase useCase;
+    private FindAddressUseCase useCase;
 
-    UUID uuid;
-    Address address;
+    private UUID uuid;
+    private Address address;
 
     @BeforeEach
     void setUp() {
