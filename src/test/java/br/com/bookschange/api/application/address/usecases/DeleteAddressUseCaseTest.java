@@ -2,6 +2,7 @@ package br.com.bookschange.api.application.address.usecases;
 
 import br.com.bookschange.api.application.address.ports.out.DeleteAddressPortOut;
 import br.com.bookschange.api.application.address.ports.out.FindAddressPortOut;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Address;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,15 @@ class DeleteAddressUseCaseTest {
         assertEquals(uuid, address.getUuid());
         verify(findAddressPortOut, times(1)).findByUuidOrThrow(any());
         verify(deleteAddressPortOut, times(1)).delete(any());
+    }
 
+    @Test
+    @DisplayName("Deve lançar NotFoundException quando o endereço não é encontrado pelo uuid")
+    void shouldThrowNotFoundExceptionWhenAddressWasNotFindByUuid() {
+        when(findAddressPortOut.findByUuidOrThrow(any())).thenThrow(new NotFoundException("Endereço não encontrado"));
+
+        assertThrows(NotFoundException.class, () -> useCase.delete(any()));
+
+        verify(deleteAddressPortOut, never()).delete(any());
     }
 }
