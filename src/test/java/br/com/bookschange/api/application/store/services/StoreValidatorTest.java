@@ -95,4 +95,12 @@ class StoreValidatorTest {
         BusinessException e = assertThrows(BusinessException.class, () -> validator.validateSlug(NORMALIZED_SLUG));
         assertEquals("Já existe uma loja cadastrada com esse identificador", e.getMessage());
     }
+
+    @Test
+    @DisplayName("Deve lançar BusinessException quando o usuário já possui um loja")
+    void shouldThrowBusinessExceptionWhenOwnerAlreadyHasStore() {
+        when(findStorePortOut.findByOwnerUuid(ownerUuid)).thenReturn(Optional.of(store));
+        BusinessException e = assertThrows(BusinessException.class, () -> validator.validateOwner(ownerUuid));
+        assertEquals("O usuário já possui uma loja", e.getMessage());
+    }
 }
