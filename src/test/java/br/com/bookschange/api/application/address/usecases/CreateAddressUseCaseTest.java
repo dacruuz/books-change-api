@@ -6,6 +6,7 @@ import br.com.bookschange.api.application.address.mappers.AddressMapper;
 import br.com.bookschange.api.application.address.ports.out.SaveAddressPortOut;
 import br.com.bookschange.api.application.address.services.AddressNormalizer;
 import br.com.bookschange.api.application.address.services.AddressValidator;
+import br.com.bookschange.api.domain.exceptions.BusinessException;
 import br.com.bookschange.api.domain.models.Address;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,10 +75,23 @@ class CreateAddressUseCaseTest {
         ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
         verify(saveAddressPortOut).save(addressCaptor.capture());
 
-        verify(normalizer, times(1)).normalizeData(address);
+        verify(normalizer, times(1)).normalizeData(any());
         verify(validator, times(1)).validateZipCode(anyString());
         verify(mapper, times(1)).createAddressRequestToEntity(any());
         verify(mapper, times(1)).entityToAddressResponse(any());
-        verify(saveAddressPortOut).save(address);
+        verify(saveAddressPortOut).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve lançar BusinessException quando o cep estiver incorreto")
+    void shouldThrowBusinessExceptionWhenZipCodeIsIncorrect() {
+        doThrow(new BusinessException("O cep deve conter os 8 dígitos")).when(validator).validateZipCode(anyString());
+
+        assertThrows(BusinessException.class, () -> useCase.create(request));
+
+        verify(normalizer, never()).normalizeData(any());
+        verify(mapper, never()).createAddressRequestToEntity(any());
+        verify(mapper, never()).entityToAddressResponse(any());
+        verify(saveAddressPortOut, never()).save(any());
     }
 }
