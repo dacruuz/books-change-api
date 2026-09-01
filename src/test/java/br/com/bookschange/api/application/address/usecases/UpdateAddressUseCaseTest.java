@@ -89,6 +89,30 @@ class UpdateAddressUseCaseTest {
     }
 
     @Test
+    @DisplayName("Deve atualizar um endereço quando todos os campos do request forem nulls")
+    void shouldUpdateAddressWhenAllRequestFieldsIsNull() {
+        UpdateAddressRequest requestNull = new UpdateAddressRequest(null, null, null,null,null,null,null, null);
+        AddressResponse expectedResponse = mock(AddressResponse.class);
+
+        when(findAddressPortOut.findByUuidOrThrow(uuid)).thenReturn(address);
+        doNothing().when(mapper).updateAddressRequestToEntity(requestNull, address);
+        doNothing().when(normalizer).normalizeData(address);
+        when(saveAddressPortOut.save(address)).thenReturn(address);
+        when(mapper.entityToAddressResponse(address)).thenReturn(expectedResponse);
+
+        AddressResponse result = useCase.update(uuid, requestNull);
+        ArgumentCaptor<Address> addressCaptor = ArgumentCaptor.forClass(Address.class);
+
+        assertEquals(expectedResponse, result);
+        verify(findAddressPortOut).findByUuidOrThrow(uuid);
+        verify(mapper).updateAddressRequestToEntity(requestNull, address);
+        verify(normalizer).normalizeData(address);
+        verify(saveAddressPortOut).save(addressCaptor.capture());
+        verify(mapper).entityToAddressResponse(address);
+        verify(validator, never()).validateZipCode(any());
+    }
+
+    @Test
     @DisplayName("Deve lançar NotFoundException qunado o endereço não é encontrado pelo uuid")
     void shouldThrowNotFoundExceptionWhenAddressWasNotFindByUuid() {
         when(findAddressPortOut.findByUuidOrThrow(uuid)).thenThrow(new NotFoundException("Endereço não encontrado"));
