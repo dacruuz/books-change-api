@@ -49,8 +49,6 @@ class CreateBookUseCaseTest {
     public static final String LIVRO_EDITORA = "Livro editora";
     public static final String LIVRO_RESUMO = "Livro resumo";
 
-    private UUID ownerUuid;
-    private List<UUID> categoryUuidList;
     private BookResponse expectedResponse;
     private CreateBookRequest request;
     private Book mappedBook;
@@ -59,14 +57,14 @@ class CreateBookUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        ownerUuid = UUID.randomUUID();
+        UUID ownerUuid = UUID.randomUUID();
         owner = mock(User.class);
         owner.setUuid(ownerUuid);
 
         categoryList = new ArrayList<>();
         categoryList.add(mock(Category.class));
 
-        categoryUuidList = new ArrayList<>();
+        List<UUID> categoryUuidList = new ArrayList<>();
         categoryUuidList.add(UUID.randomUUID());
 
         List<BookCategory> bookCategoryList = new ArrayList<>();
