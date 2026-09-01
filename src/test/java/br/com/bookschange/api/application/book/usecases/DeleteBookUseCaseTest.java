@@ -3,6 +3,7 @@ package br.com.bookschange.api.application.book.usecases;
 import br.com.bookschange.api.application.book.ports.out.DeleteBookPortOut;
 import br.com.bookschange.api.application.book.ports.out.FindBookPortOut;
 import br.com.bookschange.api.application.bookcategory.ports.out.DeleteBookCategoryPortOut;
+import br.com.bookschange.api.domain.exceptions.NotFoundException;
 import br.com.bookschange.api.domain.models.Book;
 import br.com.bookschange.api.domain.models.BookCategory;
 import br.com.bookschange.api.domain.models.User;
@@ -72,5 +73,16 @@ class DeleteBookUseCaseTest {
 
         verify(findBookPortOut).findByUuidOrThrow(any());
         verify(deleteBookPortOut).delete(any());
+    }
+
+    @Test
+    @DisplayName("Deve lançar NotFoundException quando o livro não for encontrado polo uuid")
+    void shouldThrowNotFoundExceptionWhenBookIsNotFoundByUuid() {
+        when(findBookPortOut.findByUuidOrThrow(any())).thenThrow(new NotFoundException("Livro não encontrado"));
+
+        assertThrows(NotFoundException.class, () -> useCase.delete(any()));
+
+        verify(deleteBookCategoryPortOut, never()).deleteAll(anyList());
+        verify(deleteBookPortOut, never()).delete(any());
     }
 }
