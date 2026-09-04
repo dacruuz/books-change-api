@@ -58,4 +58,22 @@ class StoreDeletionServiceTest {
         verify(saveUserPortOut).save(owner);
         verify(deleteStorePortOut).delete(store);
     }
+
+    @Test
+    @DisplayName("Deve excluir uma loja sem endereço com sucesso")
+    void shouldDeleteStoreWithoutAddressSuccessfully() {
+        store.setAddress(null);
+
+        when(saveUserPortOut.save(owner)).thenReturn(owner);
+        doNothing().when(deleteStorePortOut).delete(store);
+
+        assertDoesNotThrow(() -> service.delete(store));
+
+        assertEquals(UserType.DEFAULT, owner.getUserType());
+        verify(deleteAddressPortOut, never()).delete(any());
+        verify(saveUserPortOut).save(owner);
+        verify(deleteStorePortOut).delete(store);
+    }
+
+
 }
