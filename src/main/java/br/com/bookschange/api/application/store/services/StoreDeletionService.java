@@ -40,7 +40,7 @@ public class StoreDeletionService {
     private void updateOwnerUserType(User owner) {
         log.debug("Buscando usuário para alteração do tipo do usuário | ownerUuid: {}", owner.getUuid());
 
-        owner.setUserType(UserType.DEFAULT);
+        owner.revokeStoreOwnership();
 
         saveUserPortOut.save(owner);
         log.debug("Tipo do usuário atualizado para DEFAULT | ownerUuid: {}", owner.getUuid());
