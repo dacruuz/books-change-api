@@ -41,7 +41,7 @@ class CreateStoreUseCaseTest {
     private Store store;
 
     @InjectMocks
-    CreateStoreUseCase useCase;
+    private CreateStoreUseCase useCase;
 
     @BeforeEach
     void setUp() {
